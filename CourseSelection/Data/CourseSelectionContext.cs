@@ -75,10 +75,7 @@ public partial class CourseSelectionContext : DbContext
             entity.Property(e => e.DayOfWeek).HasColumnName("dayOfWeek");
             entity.Property(e => e.EndTime).HasColumnName("endTime");
             entity.Property(e => e.IsDelete).HasColumnName("isDelete");
-            entity.Property(e => e.Language)
-                .IsRequired()
-                .HasMaxLength(100)
-                .HasColumnName("language");
+            entity.Property(e => e.Language).HasColumnName("language");
             entity.Property(e => e.MaximumEnrollment).HasColumnName("maximumEnrollment");
             entity.Property(e => e.Name)
                 .IsRequired()

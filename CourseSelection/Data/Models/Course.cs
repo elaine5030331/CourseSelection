@@ -15,7 +15,7 @@ public partial class Course
 
     public bool Required { get; set; }
 
-    public string Language { get; set; }
+    public int Language { get; set; }
 
     public bool IsDelete { get; set; }
 
