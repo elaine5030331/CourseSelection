@@ -10,7 +10,7 @@ namespace CourseSelection.Services
         protected CourseSelectionContext DbContext;
         protected DbSet<TEntity> DbSet;
 
-        public EFRepository(CourseSelectionContext dbContext, DbSet<TEntity> dbSet)
+        public EFRepository(CourseSelectionContext dbContext)
         {
             DbContext = dbContext;
             DbSet = dbContext.Set<TEntity>();

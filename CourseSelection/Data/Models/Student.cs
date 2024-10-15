@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CourseSelection.Enums;
+using System;
 using System.Collections.Generic;
 
 namespace CourseSelection.Data.Models;
@@ -9,17 +10,13 @@ public partial class Student
 
     public int UserId { get; set; }
 
-    public string StudentId { get; set; } = null!;
+    public string StudentId { get; set; }
 
     public int EnrollmentYear { get; set; }
 
-    public string Major { get; set; } = null!;
-
-    public string? Minor { get; set; }
-
-    public DateTime? CreatedAt { get; set; }
+    public StudentDepartments DepartmentId { get; set; }
 
     public virtual ICollection<SelectedCourse> SelectedCourses { get; set; } = new List<SelectedCourse>();
 
-    public virtual User User { get; set; } = null!;
+    public virtual User User { get; set; }
 }

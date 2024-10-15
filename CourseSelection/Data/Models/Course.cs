@@ -7,19 +7,19 @@ public partial class Course
 {
     public int Id { get; set; }
 
-    public string CourseId { get; set; } = null!;
+    public string CourseId { get; set; }
 
-    public string Name { get; set; } = null!;
+    public string Name { get; set; }
 
     public int Credits { get; set; }
 
     public bool Required { get; set; }
 
-    public string Language { get; set; } = null!;
+    public string Language { get; set; }
 
     public bool IsDelete { get; set; }
 
-    public string? Syllabus { get; set; }
+    public string Syllabus { get; set; }
 
     public short AcademicYear { get; set; }
 
@@ -37,9 +37,9 @@ public partial class Course
 
     public int ClassId { get; set; }
 
-    public virtual Class Class { get; set; } = null!;
+    public virtual Class Class { get; set; }
 
     public virtual ICollection<SelectedCourse> SelectedCourses { get; set; } = new List<SelectedCourse>();
 
-    public virtual Teacher Teacher { get; set; } = null!;
+    public virtual Teacher Teacher { get; set; }
 }
