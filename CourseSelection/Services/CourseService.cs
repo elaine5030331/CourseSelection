@@ -9,6 +9,7 @@ namespace CourseSelection.Services
     {
         private readonly IRepository<Course> _courseRepo;
         private readonly ILogger<CourseService> _logger;
+        private readonly int academicYear = DateTime.UtcNow.Year - 1911;
 
         public CourseService(IRepository<Course> courseRepo, ILogger<CourseService> logger)
         {
@@ -27,8 +28,6 @@ namespace CourseSelection.Services
 
             try
             {
-                var academicYear = DateTime.UtcNow.Year - 1911;
-
                 var course = new Course()
                 {
                     CourseId = request.CourseId,
@@ -88,9 +87,52 @@ namespace CourseSelection.Services
             throw new NotImplementedException();
         }
 
-        public Task<OperationResult> UpdateCourseAsync(UpdateCourseRequest request)
+        public async Task<OperationResult<UpdateCourseResponse>> UpdateCourseAsync(UpdateCourseRequest request)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(request.CourseId))
+                return new OperationResult<UpdateCourseResponse>("請輸入課程編號");
+            if (string.IsNullOrEmpty(request.Name))
+                return new OperationResult<UpdateCourseResponse>("請輸入課程名稱");
+            if (request.MaximumEnrollment <= 0)
+                return new OperationResult<UpdateCourseResponse>("請輸入開課人數上限");
+            if (request.ClassId <= 0)
+                return new OperationResult<UpdateCourseResponse>("請輸入上課教室");
+            if (request.TeacherId <= 0)
+                return new OperationResult<UpdateCourseResponse>("請輸入授課講師");
+
+            try
+            {
+                var course = await _courseRepo.GetByIdAsync(request.Id);
+                if (course == null)
+                    return new OperationResult<UpdateCourseResponse>("找不到此課程");
+
+                course.CourseId = request.CourseId;
+                course.Name = request.Name;
+                course.Credits = request.Credits;
+                course.Required = request.Required;
+                course.Language = request.Language;
+                course.Syllabus = request.Syllabus;
+                course.DayOfWeek = request.DayOfWeek;
+                course.StartTime = request.StartTime;
+                course.EndTime = request.EndTime;
+                course.MaximumEnrollment = request.MaximumEnrollment;
+                course.IsDelete = request.IsDelete;
+                course.ClassId = request.ClassId;
+                course.TeacherId = request.TeacherId;
+
+                await _courseRepo.UpdateAsync(course);
+                var result = new UpdateCourseResponse { Id =  course.Id };
+                return new OperationResult<UpdateCourseResponse>(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return new OperationResult<UpdateCourseResponse>()
+                {
+                    IsSuccess = false,
+                    ErrorMessage = "更新課程內容失敗"
+                };
+            }
         }
     }
 }

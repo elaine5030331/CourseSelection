@@ -60,6 +60,57 @@ namespace CourseSelection.Controllers
         }
 
         /// <summary>
+        /// 更新課程內容
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Sample request:<br/>
+        /// 
+        ///     PUT
+        ///     {
+        ///        "id": 1,
+        ///        "courseId": "PS100A", 
+        ///        "name": "普通心理學", 
+        ///        "credits": 3,
+        ///        "required": true(必修為 true，選修為 false),
+        ///        "language": 1 (國語 = 0, 英語 = 1)
+        ///        "syllabus": "本課程涵蓋心理學的基礎知識，每週設定教學主題，教授心理學知識及其生活應用。",
+        ///        "dayOfWeek": 1,
+        ///        "startTime": "09:00:00",
+        ///        "endTime": "12:00:00",
+        ///        "maximumEnrollment": 85,
+        ///        "isDelete": false,
+        ///        "classId": 1,
+        ///        "teacherId": 1
+        ///     }
+        /// </remarks>
+        /// <response code ="200">新增課程成功</response>
+        /// <response code ="400">
+        /// 1. 參數異常
+        /// 2. 請輸入課程編號
+        /// 3. 請輸入課程名稱
+        /// 4. 請輸入開課人數上限
+        /// 5. 請輸入上課教室
+        /// 6. 請輸入授課講師
+        /// 7. 找不到此課程
+        /// 8. 更新課程內容失敗
+        /// </response>
+        /// <response code ="401">未通過身分驗證</response>
+        /// <response code ="403">權限不足</response>
+        [HttpPut("UpdateCourse/id")]
+        public async Task<IActionResult> UpdateCourse(int id, UpdateCourseRequest request)
+        {
+            if (id != request.Id)
+                return BadRequest("參數異常");
+            var result = await _courseService.UpdateCourseAsync(request);
+            if(result.IsSuccess)
+                return Ok(result.ResultDto);
+            return BadRequest(result.ErrorMessage);
+        }
+
+        /// <summary>
         /// 刪除課程
         /// </summary>
         /// <param name="id"></param>

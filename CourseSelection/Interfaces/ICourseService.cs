@@ -7,7 +7,7 @@ namespace CourseSelection.Interfaces
     {
         Task<OperationResult> CreateCourseAsync(CreateCourseRequest request);
         Task<OperationResult> GetCourseListAsync(GetCourseListRequest request);
-        Task<OperationResult> UpdateCourseAsync(UpdateCourseRequest request);
+        Task<OperationResult<UpdateCourseResponse>> UpdateCourseAsync(UpdateCourseRequest request);
         Task<OperationResult> DeleteCourseAsync(int id);
     }
 }
