@@ -149,7 +149,6 @@ public partial class CourseSelectionContext : DbContext
 
         modelBuilder.Entity<StudentDepartment>(entity =>
         {
-            entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(100);
@@ -189,7 +188,6 @@ public partial class CourseSelectionContext : DbContext
 
         modelBuilder.Entity<TeacherDepartment>(entity =>
         {
-            entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(100);
