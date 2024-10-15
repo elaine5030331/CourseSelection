@@ -60,9 +60,27 @@ namespace CourseSelection.Services
             }
         }
 
-        public Task<OperationResult> DeleteCourseAsync(int id)
+        public async Task<OperationResult> DeleteCourseAsync(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var course = await _courseRepo.GetByIdAsync(id);
+                if (course == null || course.IsDelete)
+                    return new OperationResult("找不到對應的課程");
+
+                course.IsDelete = true;
+                await _courseRepo.UpdateAsync(course);
+                return new OperationResult();
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError(ex, ex.Message);
+                return new OperationResult()
+                {
+                    IsSuccess = false,
+                    ErrorMessage = "刪除課程失敗"
+                };
+            }
         }
 
         public Task<OperationResult> GetCourseListAsync(GetCourseListRequest request)

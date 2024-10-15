@@ -58,5 +58,24 @@ namespace CourseSelection.Controllers
                 return Ok();
             return BadRequest(result.ErrorMessage);
         }
+
+        /// <summary>
+        /// 刪除課程
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <response code ="204">刪除課程成功</response>
+        /// <response code ="400">
+        /// 1. 找不到對應的課程
+        /// 2. 刪除課程失敗
+        /// </response>
+        [HttpDelete("DeleteCourse/{id}")]
+        public async Task<IActionResult> DeleteCourse(int id)
+        {
+            var result = await _courseService.DeleteCourseAsync(id);
+            if (result.IsSuccess)
+                return NoContent();
+            return BadRequest(result.ErrorMessage);
+        }
     }
 }
