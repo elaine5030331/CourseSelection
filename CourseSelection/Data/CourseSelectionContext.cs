@@ -161,10 +161,7 @@ public partial class CourseSelectionContext : DbContext
             entity.Property(e => e.DepartmentId)
                 .HasComment("所屬部門")
                 .HasColumnName("departmentId");
-            entity.Property(e => e.Position)
-                .IsRequired()
-                .HasMaxLength(256)
-                .HasColumnName("position");
+            entity.Property(e => e.Position).HasColumnName("position");
             entity.Property(e => e.TeacherId)
                 .IsRequired()
                 .HasColumnName("teacherId");

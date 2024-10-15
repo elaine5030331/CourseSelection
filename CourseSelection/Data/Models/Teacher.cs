@@ -16,7 +16,7 @@ public partial class Teacher
     /// </summary>
     public int DepartmentId { get; set; }
 
-    public string Position { get; set; }
+    public int Position { get; set; }
 
     public virtual ICollection<Course> Courses { get; set; } = new List<Course>();
 
