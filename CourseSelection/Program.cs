@@ -25,6 +25,7 @@ namespace CourseSelection
             {
                 var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 opt.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+                opt.SchemaFilter<SwaggerSchemaFilter>();
             });
 
             //¸ê®Æ®wµù¥U
@@ -32,6 +33,7 @@ namespace CourseSelection
             
             builder.Services.AddScoped(typeof(IRepository<>), typeof(EFRepository<>));
             builder.Services.AddScoped<IUserManagementService, UserManagementService>();
+            builder.Services.AddScoped<ICourseService, CourseService>();
 
             var app = builder.Build();
 
