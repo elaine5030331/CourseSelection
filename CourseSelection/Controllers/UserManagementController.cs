@@ -52,5 +52,43 @@ namespace CourseSelection.Controllers
                 return Ok();
             return BadRequest(result.ErrorMessage);
         }
+
+        /// <summary>
+        /// 新增講師
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Sample request:<br/>
+        /// 
+        ///     POST
+        ///     {
+        ///        "name": "Elaine", 
+        ///        "password": "Aa*1234", 
+        ///        "email": "elaine@gmail.com", (格式：需包還 "@" 及 "." 字元)
+        ///        "phone": "0960121433", (格式：需為09開頭，並且電話號碼長度為10)
+        ///        department: 1 (理學院 = 1, 人文與教育學院 = 2, 商學院 = 3, 法學院 = 4, 電資學院 = 5, 工學院 = 6, 設計學院 =7)
+        ///        position: 1( 助理教授 = 1, 副教授 = 2, 教授 = 3, 講師 = 4)
+        ///     }
+        /// </remarks>
+        /// <response code ="200">新增學生成功</response>
+        /// <response code ="400">
+        /// 1. 請輸入姓名
+        /// 2. 請輸入信箱
+        /// 3. 請輸入電話
+        /// 4. 此信箱已註冊過
+        /// 5. 此電話已註冊過
+        /// 6. 信箱格式有誤
+        /// 7. 電話格式有誤
+        /// 8. 新增講師失敗
+        /// </response>
+        [HttpPost("CreateTeacher")]
+        public async Task<IActionResult> CreateTeacher(CreateTeacherRequest request)
+        {
+            var result = await _userManagementService.CreateTeacher(request);
+            if(result.IsSuccess)
+                return Ok();
+            return BadRequest(result.ErrorMessage);
+        }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace CourseSelection.Data.Dtos.UserManagementDtos
+﻿using CourseSelection.Enums;
+
+namespace CourseSelection.Data.Dtos.UserManagementDtos
 {
     public class CreateTeacherRequest : BaseOperationResult
     {
@@ -6,7 +8,7 @@
         public string Password { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
-        public string Department { get; set; }
-        public string Position { get; set; }
+        public TeacherDepartments Department { get; set; }
+        public TeacherPosition Position { get; set; }
     }
 }

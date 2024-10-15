@@ -15,6 +15,7 @@ namespace CourseSelection.Services
 
         private const string phonePattern = @"^09\d{8}$";
         private const string emailPattern = @".*@.*\..*";
+        private readonly int enrollmentYear = DateTime.UtcNow.Year - 1911;
 
         public UserManagementService(IRepository<User> userRepo, IRepository<Student> studentRepo, IRepository<Teacher> teacherRepo, ILogger<UserManagementService> logger)
         {
@@ -51,9 +52,9 @@ namespace CourseSelection.Services
                                 .OrderBy(s => s.UserId);
                 var studentCount = students.Count();
                 var studentNo = 1;
-                studentNo = (students ==  null)? 1 : students.Count() + 1;
+                studentNo = (students == null) ? 1 : students.Count() + 1;
 
-                var enrollmentYear = DateTime.Now.Year - 1911;
+                //var enrollmentYear = DateTime.Now.Year - 1911;
                 var studentId = $"S{enrollmentYear}{departmentId}{studentNo}";
 
                 var user = new User
@@ -82,9 +83,61 @@ namespace CourseSelection.Services
             }
         }
 
-        public Task<OperationResult> CreateTeacher(CreateTeacherRequest request)
+        public async Task<OperationResult> CreateTeacher(CreateTeacherRequest request)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(request.Name))
+                return new OperationResult("請輸入姓名");
+            if (string.IsNullOrEmpty(request.Email))
+                return new OperationResult("請輸入信箱");
+            if (string.IsNullOrEmpty(request.Phone))
+                return new OperationResult("請輸入電話");
+
+            if ((await _userRepo.AnyAsync(x => x.Email == request.Email)))
+                return new OperationResult("此信箱已註冊過");
+            if ((await _userRepo.AnyAsync(x => x.Phone == request.Phone)))
+                return new OperationResult("此電話已註冊過");
+
+            if (!Regex.IsMatch(request.Email, emailPattern))
+                return new OperationResult("信箱格式有誤");
+            if (!Regex.IsMatch(request.Phone, phonePattern))
+                return new OperationResult("電話格式有誤");
+
+            try
+            {
+                var departmentId = (int)request.Department;
+                var teachers = (await _teacherRepo.ListAsync(s => (int)s.DepartmentId == departmentId))
+                                .OrderBy(s => s.UserId);
+                var teacherCount = teachers.Count();
+                var teacherNo = 1;
+                teacherNo = (teachers == null) ? 1 : teachers.Count() + 1;
+
+                var teacherId = $"T{enrollmentYear}{departmentId}{teacherNo}";
+
+                var user = new User
+                {
+                    Username = request.Name,
+                    Email = request.Email,
+                    Phone = request.Phone,
+                    Password = request.Password,
+                    CreatedAt = DateTime.UtcNow,
+                    Teacher = new Teacher
+                    {
+                        TeacherId = teacherId,
+                        DepartmentId = request.Department,
+                        Position = request.Position
+                    }
+                };
+
+                await _userRepo.AddAsync(user);
+
+                return new OperationResult();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return new OperationResult("新增講師失敗");
+            }
+
         }
     }
 }

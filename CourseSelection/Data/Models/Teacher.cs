@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CourseSelection.Enums;
+using System;
 using System.Collections.Generic;
 
 namespace CourseSelection.Data.Models;
@@ -14,9 +15,9 @@ public partial class Teacher
     /// <summary>
     /// 所屬部門
     /// </summary>
-    public int DepartmentId { get; set; }
+    public TeacherDepartments DepartmentId { get; set; }
 
-    public int Position { get; set; }
+    public TeacherPosition Position { get; set; }
 
     public virtual ICollection<Course> Courses { get; set; } = new List<Course>();
 
