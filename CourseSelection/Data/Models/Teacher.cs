@@ -20,7 +20,5 @@ public partial class Teacher
 
     public virtual ICollection<Course> Courses { get; set; } = new List<Course>();
 
-    public virtual TeacherDepartment Department { get; set; }
-
     public virtual User User { get; set; }
 }
