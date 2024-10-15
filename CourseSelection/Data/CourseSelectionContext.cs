@@ -136,11 +136,6 @@ public partial class CourseSelectionContext : DbContext
                 .HasColumnName("studentId");
             entity.Property(e => e.UserId).HasColumnName("userId");
 
-            entity.HasOne(d => d.Department).WithMany(p => p.Students)
-                .HasForeignKey(d => d.DepartmentId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_students_StudentDepartments");
-
             entity.HasOne(d => d.User).WithOne(p => p.Student)
                 .HasForeignKey<Student>(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -174,11 +169,6 @@ public partial class CourseSelectionContext : DbContext
                 .IsRequired()
                 .HasColumnName("teacherId");
             entity.Property(e => e.UserId).HasColumnName("userId");
-
-            entity.HasOne(d => d.Department).WithMany(p => p.Teachers)
-                .HasForeignKey(d => d.DepartmentId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_teachers_TeacherDepartments");
 
             entity.HasOne(d => d.User).WithOne(p => p.Teacher)
                 .HasForeignKey<Teacher>(d => d.UserId)
