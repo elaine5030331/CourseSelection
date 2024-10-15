@@ -9,15 +9,18 @@ public partial class Teacher
 
     public int UserId { get; set; }
 
-    public string TeacherId { get; set; } = null!;
+    public string TeacherId { get; set; }
 
-    public string Department { get; set; } = null!;
+    /// <summary>
+    /// 所屬部門
+    /// </summary>
+    public int DepartmentId { get; set; }
 
-    public string Position { get; set; } = null!;
-
-    public DateTime? CreatedAt { get; set; }
+    public string Position { get; set; }
 
     public virtual ICollection<Course> Courses { get; set; } = new List<Course>();
 
-    public virtual User User { get; set; } = null!;
+    public virtual TeacherDepartment Department { get; set; }
+
+    public virtual User User { get; set; }
 }

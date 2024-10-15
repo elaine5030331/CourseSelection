@@ -24,7 +24,11 @@ public partial class CourseSelectionContext : DbContext
 
     public virtual DbSet<Student> Students { get; set; }
 
+    public virtual DbSet<StudentDepartment> StudentDepartments { get; set; }
+
     public virtual DbSet<Teacher> Teachers { get; set; }
+
+    public virtual DbSet<TeacherDepartment> TeacherDepartments { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
 
@@ -40,9 +44,11 @@ public partial class CourseSelectionContext : DbContext
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.ClassId)
+                .IsRequired()
                 .HasMaxLength(256)
                 .HasColumnName("classId");
             entity.Property(e => e.Name)
+                .IsRequired()
                 .HasMaxLength(256)
                 .HasColumnName("name");
         });
@@ -59,6 +65,7 @@ public partial class CourseSelectionContext : DbContext
             entity.Property(e => e.AcademicYear).HasColumnName("academicYear");
             entity.Property(e => e.ClassId).HasColumnName("classId");
             entity.Property(e => e.CourseId)
+                .IsRequired()
                 .HasMaxLength(256)
                 .HasColumnName("courseId");
             entity.Property(e => e.Credits).HasColumnName("credits");
@@ -69,10 +76,13 @@ public partial class CourseSelectionContext : DbContext
             entity.Property(e => e.EndTime).HasColumnName("endTime");
             entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.Language)
+                .IsRequired()
                 .HasMaxLength(100)
                 .HasColumnName("language");
             entity.Property(e => e.MaximumEnrollment).HasColumnName("maximumEnrollment");
-            entity.Property(e => e.Name).HasColumnName("name");
+            entity.Property(e => e.Name)
+                .IsRequired()
+                .HasColumnName("name");
             entity.Property(e => e.Required).HasColumnName("required");
             entity.Property(e => e.StartTime).HasColumnName("startTime");
             entity.Property(e => e.Syllabus).HasColumnName("syllabus");
@@ -120,21 +130,29 @@ public partial class CourseSelectionContext : DbContext
             entity.HasIndex(e => e.UserId, "UQ__students__CB9A1CFE2CB55CC4").IsUnique();
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.CreatedAt).HasColumnName("createdAt");
             entity.Property(e => e.EnrollmentYear).HasColumnName("enrollmentYear");
-            entity.Property(e => e.Major)
-                .HasMaxLength(256)
-                .HasColumnName("major");
-            entity.Property(e => e.Minor)
-                .HasMaxLength(256)
-                .HasColumnName("minor");
-            entity.Property(e => e.StudentId).HasColumnName("studentId");
+            entity.Property(e => e.StudentId)
+                .IsRequired()
+                .HasColumnName("studentId");
             entity.Property(e => e.UserId).HasColumnName("userId");
+
+            entity.HasOne(d => d.Department).WithMany(p => p.Students)
+                .HasForeignKey(d => d.DepartmentId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_students_StudentDepartments");
 
             entity.HasOne(d => d.User).WithOne(p => p.Student)
                 .HasForeignKey<Student>(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__students__userId__46E78A0C");
+        });
+
+        modelBuilder.Entity<StudentDepartment>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Name)
+                .IsRequired()
+                .HasMaxLength(100);
         });
 
         modelBuilder.Entity<Teacher>(entity =>
@@ -146,20 +164,35 @@ public partial class CourseSelectionContext : DbContext
             entity.HasIndex(e => e.UserId, "UQ__teachers__CB9A1CFE171CCC77").IsUnique();
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.CreatedAt).HasColumnName("createdAt");
-            entity.Property(e => e.Department)
-                .HasMaxLength(256)
-                .HasColumnName("department");
+            entity.Property(e => e.DepartmentId)
+                .HasComment("所屬部門")
+                .HasColumnName("departmentId");
             entity.Property(e => e.Position)
+                .IsRequired()
                 .HasMaxLength(256)
                 .HasColumnName("position");
-            entity.Property(e => e.TeacherId).HasColumnName("teacherId");
+            entity.Property(e => e.TeacherId)
+                .IsRequired()
+                .HasColumnName("teacherId");
             entity.Property(e => e.UserId).HasColumnName("userId");
+
+            entity.HasOne(d => d.Department).WithMany(p => p.Teachers)
+                .HasForeignKey(d => d.DepartmentId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_teachers_TeacherDepartments");
 
             entity.HasOne(d => d.User).WithOne(p => p.Teacher)
                 .HasForeignKey<Teacher>(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__teachers__userId__47DBAE45");
+        });
+
+        modelBuilder.Entity<TeacherDepartment>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Name)
+                .IsRequired()
+                .HasMaxLength(100);
         });
 
         modelBuilder.Entity<User>(entity =>
@@ -170,12 +203,17 @@ public partial class CourseSelectionContext : DbContext
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.CreatedAt).HasColumnName("createdAt");
-            entity.Property(e => e.Email).HasColumnName("email");
-            entity.Property(e => e.Password).HasColumnName("password");
+            entity.Property(e => e.Email)
+                .IsRequired()
+                .HasColumnName("email");
+            entity.Property(e => e.Password)
+                .IsRequired()
+                .HasColumnName("password");
             entity.Property(e => e.Phone)
                 .HasMaxLength(50)
                 .HasColumnName("phone");
             entity.Property(e => e.Username)
+                .IsRequired()
                 .HasMaxLength(256)
                 .HasColumnName("username");
         });

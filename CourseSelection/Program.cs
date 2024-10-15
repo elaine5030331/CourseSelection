@@ -1,4 +1,8 @@
 
+using CourseSelection.Data;
+using Microsoft.EntityFrameworkCore;
+
+
 namespace CourseSelection
 {
     public class Program
@@ -13,6 +17,9 @@ namespace CourseSelection
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            //¸ê®Æ®wµù¥U
+            builder.Services.AddDbContext<CourseSelectionContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("CourseSelection")));
 
             var app = builder.Build();
 

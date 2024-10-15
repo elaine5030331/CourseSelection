@@ -15,7 +15,7 @@ public partial class SelectedCourse
 
     public DateTime? SelectedAt { get; set; }
 
-    public virtual Course Courses { get; set; } = null!;
+    public virtual Course Courses { get; set; }
 
-    public virtual Student Student { get; set; } = null!;
+    public virtual Student Student { get; set; }
 }

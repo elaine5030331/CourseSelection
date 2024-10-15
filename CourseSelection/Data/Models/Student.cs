@@ -9,17 +9,15 @@ public partial class Student
 
     public int UserId { get; set; }
 
-    public string StudentId { get; set; } = null!;
+    public string StudentId { get; set; }
 
     public int EnrollmentYear { get; set; }
 
-    public string Major { get; set; } = null!;
+    public int DepartmentId { get; set; }
 
-    public string? Minor { get; set; }
-
-    public DateTime? CreatedAt { get; set; }
+    public virtual StudentDepartment Department { get; set; }
 
     public virtual ICollection<SelectedCourse> SelectedCourses { get; set; } = new List<SelectedCourse>();
 
-    public virtual User User { get; set; } = null!;
+    public virtual User User { get; set; }
 }
