@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using CourseSelection.Models;
+using CourseSelection.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace CourseSelection.Data;

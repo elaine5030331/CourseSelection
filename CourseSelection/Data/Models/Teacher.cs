@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CourseSelection.Models;
+namespace CourseSelection.Data.Models;
 
 public partial class Teacher
 {
