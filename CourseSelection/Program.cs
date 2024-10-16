@@ -38,6 +38,7 @@ namespace CourseSelection
             builder.Services.AddScoped(typeof(IRepository<>), typeof(EFRepository<>));
             builder.Services.AddScoped<IUserManagementService, UserManagementService>();
             builder.Services.AddScoped<ICourseService, CourseService>();
+            builder.Services.AddScoped<ITeacherService, TeacherService>();
 
             var app = builder.Build();
 
