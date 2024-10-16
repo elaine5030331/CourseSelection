@@ -1,4 +1,4 @@
-﻿using CourseSelection.Enums;
+﻿using CourseSelection.Common.Enums;
 using System;
 using System.Collections.Generic;
 
@@ -17,7 +17,7 @@ public partial class Teacher
     /// </summary>
     public TeacherDepartments DepartmentId { get; set; }
 
-    public TeacherPosition PositionId { get; set; }
+    public TeacherPositions PositionId { get; set; }
 
     public virtual ICollection<Course> Courses { get; set; } = new List<Course>();
 
