@@ -100,7 +100,6 @@ public partial class CourseSelectionContext : DbContext
 
             entity.HasIndex(e => e.UserId, "UQ_Students_UserId").IsUnique();
 
-            entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.Department).HasComment("所屬系所(心理學系 = 1, 特殊教育學系 = 2, 資訊管理學系 = 3, 資訊工程學系 = 4, 建築學系 = 5, 會計學系 = 6, 國際經營與貿易學系 =7");
             entity.Property(e => e.EnrollmentYear).HasComment("入學年份");
             entity.Property(e => e.StudentId)
@@ -138,7 +137,6 @@ public partial class CourseSelectionContext : DbContext
 
             entity.HasIndex(e => e.Phone, "UQ_Users_Phone").IsUnique();
 
-            entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.Email).HasMaxLength(500);
             entity.Property(e => e.Password).HasMaxLength(500);
             entity.Property(e => e.Phone)
