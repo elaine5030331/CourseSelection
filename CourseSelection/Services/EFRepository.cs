@@ -45,6 +45,11 @@ namespace CourseSelection.Services
             return (await DbSet.FirstOrDefaultAsync(expression))!;
         }
 
+        public async Task<List<TEntity>> GetAllAsync()
+        {
+            return await DbSet.ToListAsync();
+        }
+
         public async Task<TEntity> GetByIdAsync<TId>(TId id)
         {
             return (await DbSet.FindAsync(new object[] { id }))!;
