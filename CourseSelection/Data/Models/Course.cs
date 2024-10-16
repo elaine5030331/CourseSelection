@@ -38,9 +38,9 @@ public partial class Course
     public short AcademicYear { get; set; }
 
     /// <summary>
-    /// 課程為每週幾，星期一 = 1，星期二 = 2，星期三 = 3..., 星期日 = 7
+    /// 課程為每週幾，星期一 = 0，星期二 = 1，星期三 = 2..., 星期日 = 6
     /// </summary>
-    public byte DayOfWeek { get; set; }
+    public DayOfWeekEnum DayOfWeek { get; set; }
 
     /// <summary>
     /// 上課開始時間

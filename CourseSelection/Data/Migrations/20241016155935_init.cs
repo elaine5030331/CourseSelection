@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CourseSelection.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -29,10 +29,11 @@ namespace CourseSelection.Data.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Username = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    Password = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -45,7 +46,8 @@ namespace CourseSelection.Data.Migrations
                 name: "Students",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     StudentId = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false, comment: "學號"),
                     EnrollmentYear = table.Column<int>(type: "int", nullable: false, comment: "入學年份"),
@@ -95,7 +97,7 @@ namespace CourseSelection.Data.Migrations
                     Language = table.Column<int>(type: "int", nullable: false, comment: "授課語言(國語 = 0, 英語 = 1)"),
                     Syllabus = table.Column<string>(type: "nvarchar(max)", nullable: false, comment: "課程簡介"),
                     AcademicYear = table.Column<short>(type: "smallint", nullable: false, comment: "學年度"),
-                    DayOfWeek = table.Column<byte>(type: "tinyint", nullable: false, comment: "課程為每週幾，星期一 = 1，星期二 = 2，星期三 = 3..., 星期日 = 7"),
+                    DayOfWeek = table.Column<int>(type: "int", nullable: false, comment: "課程為每週幾，星期一 = 1，星期二 = 2，星期三 = 3..., 星期日 = 7"),
                     StartTime = table.Column<TimeOnly>(type: "time", nullable: false, comment: "上課開始時間"),
                     EndTime = table.Column<TimeOnly>(type: "time", nullable: false, comment: "上課結束時間"),
                     MaximumEnrollment = table.Column<int>(type: "int", nullable: false, comment: "開課人數上限"),
@@ -127,7 +129,7 @@ namespace CourseSelection.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     StudentId = table.Column<int>(type: "int", nullable: false),
                     CourseId = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<byte>(type: "tinyint", nullable: false, comment: "選課狀態，選課成功 = 0, 已退選 = 1"),
+                    Status = table.Column<int>(type: "int", nullable: false, comment: "選課狀態，選課成功 = 0, 已退選 = 1"),
                     SelectedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -205,8 +207,7 @@ namespace CourseSelection.Data.Migrations
                 name: "UQ_Users_Email",
                 table: "Users",
                 column: "Email",
-                unique: true,
-                filter: "[Email] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "UQ_Users_Phone",

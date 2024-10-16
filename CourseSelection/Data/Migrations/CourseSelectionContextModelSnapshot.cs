@@ -77,8 +77,8 @@ namespace CourseSelection.Data.Migrations
                         .HasColumnType("int")
                         .HasComment("目前選課人數");
 
-                    b.Property<byte>("DayOfWeek")
-                        .HasColumnType("tinyint")
+                    b.Property<int>("DayOfWeek")
+                        .HasColumnType("int")
                         .HasComment("課程為每週幾，星期一 = 1，星期二 = 2，星期三 = 3..., 星期日 = 7");
 
                     b.Property<TimeOnly>("EndTime")
@@ -145,8 +145,8 @@ namespace CourseSelection.Data.Migrations
                     b.Property<DateTime>("SelectedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<byte>("Status")
-                        .HasColumnType("tinyint")
+                    b.Property<int>("Status")
+                        .HasColumnType("int")
                         .HasComment("選課狀態，選課成功 = 0, 已退選 = 1");
 
                     b.Property<int>("StudentId")
@@ -164,7 +164,10 @@ namespace CourseSelection.Data.Migrations
             modelBuilder.Entity("CourseSelection.Data.Models.Student", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("Department")
                         .HasColumnType("int")
@@ -232,16 +235,21 @@ namespace CourseSelection.Data.Migrations
             modelBuilder.Entity("CourseSelection.Data.Models.User", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Password")
+                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
@@ -258,8 +266,7 @@ namespace CourseSelection.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex(new[] { "Email" }, "UQ_Users_Email")
-                        .IsUnique()
-                        .HasFilter("[Email] IS NOT NULL");
+                        .IsUnique();
 
                     b.HasIndex(new[] { "Phone" }, "UQ_Users_Phone")
                         .IsUnique();
