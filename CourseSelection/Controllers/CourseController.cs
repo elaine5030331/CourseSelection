@@ -20,7 +20,7 @@ namespace CourseSelection.Controllers
         /// 新增課程
         /// </summary>
         /// <param name="request"></param>
-        /// <returns></returns>
+        /// <returns>id</returns>
         /// <remarks>
         /// Sample request:<br/>
         /// 
@@ -46,7 +46,9 @@ namespace CourseSelection.Controllers
         /// 1. 請輸入課程編號
         /// 2. 請輸入課程名稱
         /// 3. 請輸入開課人數上限
-        /// 4. 新增課程失敗
+        /// 4. 請輸入上課教室
+        /// 5. 請輸入授課講師
+        /// 6. 新增課程失敗
         /// </response>
         /// <response code ="401">未通過身分驗證</response>
         /// <response code ="403">權限不足</response>
@@ -55,7 +57,7 @@ namespace CourseSelection.Controllers
         {
             var result = await _courseService.CreateCourseAsync(request);
             if (result.IsSuccess)
-                return Ok();
+                return Ok(result.ResultDto);
             return BadRequest(result.ErrorMessage);
         }
 
@@ -99,7 +101,7 @@ namespace CourseSelection.Controllers
         /// </response>
         /// <response code ="401">未通過身分驗證</response>
         /// <response code ="403">權限不足</response>
-        [HttpPut("UpdateCourse/id")]
+        [HttpPut("UpdateCourse/{id}")]
         public async Task<IActionResult> UpdateCourse(int id, UpdateCourseRequest request)
         {
             if (id != request.Id)

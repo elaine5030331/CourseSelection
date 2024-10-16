@@ -17,14 +17,18 @@ namespace CourseSelection.Services
             _logger = logger;
         }
 
-        public async Task<OperationResult> CreateCourseAsync(CreateCourseRequest request)
+        public async Task<OperationResult<CreateCourseResponse>> CreateCourseAsync(CreateCourseRequest request)
         {
             if (string.IsNullOrEmpty(request.CourseId))
-                return new OperationResult("請輸入課程編號");
+                return new OperationResult<CreateCourseResponse>("請輸入課程編號");
             if (string.IsNullOrEmpty(request.Name))
-                return new OperationResult("請輸入課程名稱");
+                return new OperationResult<CreateCourseResponse>("請輸入課程名稱");
             if (request.MaximumEnrollment <= 0)
-                return new OperationResult("請輸入開課人數上限");
+                return new OperationResult<CreateCourseResponse>("請輸入開課人數上限");
+            if (request.ClassId <= 0)
+                return new OperationResult<CreateCourseResponse>("請輸入上課教室");
+            if (request.TeacherId <= 0)
+                return new OperationResult<CreateCourseResponse>("請輸入授課講師");
 
             try
             {
@@ -46,12 +50,13 @@ namespace CourseSelection.Services
                 };
 
                 await _courseRepo.AddAsync(course);
-                return new OperationResult();
+                var result = new CreateCourseResponse { Id = course.Id };
+                return new OperationResult<CreateCourseResponse>(result);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, ex.Message);
-                return new OperationResult()
+                return new OperationResult<CreateCourseResponse>()
                 {
                     IsSuccess = false,
                     ErrorMessage = "新增課程失敗"
