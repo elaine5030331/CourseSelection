@@ -77,6 +77,22 @@ namespace CourseSelection.Controllers
         }
 
         /// <summary>
+        /// 取得授課講師所開課程列表
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <response code ="200">取得授課講師所開課程列表成功</response>
+        /// <response code ="404">找不到任何該講師對應的課程內容</response>
+        [HttpGet("GetCourseListByTeacherId/{id}")]
+        public async Task<IActionResult> GetCourseListByTeacherId(int id)
+        {
+            var result = await _courseService.GetCourseListByTeacherIdAsync(id);
+            if (result == null)
+                return NotFound();
+            return Ok(result);
+        }
+
+        /// <summary>
         /// 更新課程內容
         /// </summary>
         /// <param name="id"></param>

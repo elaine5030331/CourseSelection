@@ -4,6 +4,7 @@ using CourseSelection.Data.Models;
 using CourseSelection.Interfaces;
 using Dapper;
 using System.Data;
+using static CourseSelection.Data.Dtos.CourseDtos.GetCourseListByTeacherIdResponse;
 
 namespace CourseSelection.Services
 {
@@ -126,6 +127,42 @@ namespace CourseSelection.Services
 
             return result;
 
+        }
+
+        public async Task<GetCourseListByTeacherIdResponse> GetCourseListByTeacherIdAsync(int id)
+        {
+            var parameter = new {TeacherId = id};
+            var sql = @"
+                        SELECT 
+	                        courses.id AS Id,
+	                        courseId AS CourseId,
+	                        courses.[name] AS CourseName,
+	                        credits AS Credits,
+	                        [required] AS Required,
+	                        [language] AS Language,
+	                        syllabus AS Syllabus,
+	                        academicYear AS AcademicYear,
+	                        [dayOfWeek] AS DayOfWeek,
+	                        startTime AS StartTime,
+	                        endTime AS EndTime,
+	                        maximumEnrollment AS MaximumEnrollment,
+                            classes.id AS ClassId,
+	                        classes.[name] AS ClassName,
+	                        teachers.id AS TeacherId,
+	                        users.username AS TeacherName,
+	                        users.email AS TeacherEmail
+                        FROM dbo.courses
+                        JOIN classes ON classes.id = courses.classId
+                        JOIN teachers ON teachers.id = courses.teacherId
+                        JOIN users ON users.id = teachers.userId
+                        WHERE teachers.id = @TeacherId";
+
+            var queryString = (await _connection.QueryAsync<CourseInfoById>(sql, parameter)).ToList();
+            var result = new GetCourseListByTeacherIdResponse()
+            {
+                CourseInfo = queryString
+            };
+            return result;
         }
 
         public async Task<OperationResult<UpdateCourseResponse>> UpdateCourseAsync(UpdateCourseRequest request)
