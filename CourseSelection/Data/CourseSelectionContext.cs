@@ -130,6 +130,7 @@ public partial class CourseSelectionContext : DbContext
             entity.Property(e => e.EnrollmentYear).HasColumnName("enrollmentYear");
             entity.Property(e => e.StudentId)
                 .IsRequired()
+                .HasMaxLength(500)
                 .HasColumnName("studentId");
             entity.Property(e => e.UserId).HasColumnName("userId");
 
@@ -158,9 +159,10 @@ public partial class CourseSelectionContext : DbContext
             entity.Property(e => e.DepartmentId)
                 .HasComment("所屬部門")
                 .HasColumnName("departmentId");
-            entity.Property(e => e.Position).HasColumnName("position");
+            entity.Property(e => e.PositionId).HasColumnName("positionId");
             entity.Property(e => e.TeacherId)
                 .IsRequired()
+                .HasMaxLength(500)
                 .HasColumnName("teacherId");
             entity.Property(e => e.UserId).HasColumnName("userId");
 

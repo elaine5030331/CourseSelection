@@ -124,7 +124,7 @@ namespace CourseSelection.Services
                     {
                         TeacherId = teacherId,
                         DepartmentId = request.Department,
-                        Position = request.Position
+                        PositionId = request.Position
                     }
                 };
 
