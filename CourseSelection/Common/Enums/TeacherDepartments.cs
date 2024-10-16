@@ -1,4 +1,4 @@
-﻿namespace CourseSelection.Enums
+﻿namespace CourseSelection.Common.Enums
 {
     public enum TeacherDepartments
     {
@@ -8,6 +8,6 @@
         法學院 = 4,
         電資學院 = 5,
         工學院 = 6,
-        設計學院 =7
+        設計學院 = 7
     }
 }

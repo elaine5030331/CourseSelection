@@ -1,4 +1,4 @@
-﻿namespace CourseSelection.Enums
+﻿namespace CourseSelection.Common.Enums
 {
     public enum StudentDepartments
     {
@@ -8,6 +8,6 @@
         資訊工程學系 = 4,
         建築學系 = 5,
         會計學系 = 6,
-        國際經營與貿易學系 =7
+        國際經營與貿易學系 = 7
     }
 }

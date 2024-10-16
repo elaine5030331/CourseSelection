@@ -2,13 +2,13 @@
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace CourseSelection
+namespace CourseSelection.Common
 {
     public class SwaggerSchemaFilter : ISchemaFilter
     {
         public void Apply(OpenApiSchema schema, SchemaFilterContext context)
         {
-            if(context.Type == typeof(TimeOnly))
+            if (context.Type == typeof(TimeOnly))
             {
                 schema.Type = "string";
                 schema.Format = "time";

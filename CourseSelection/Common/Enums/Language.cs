@@ -1,4 +1,4 @@
-﻿namespace CourseSelection.Enums
+﻿namespace CourseSelection.Common.Enums
 {
     public enum Language
     {
