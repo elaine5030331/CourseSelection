@@ -19,14 +19,13 @@ namespace CourseSelection.Services
         {
             var sql = @"
                         SELECT 
-	                        teachers.id AS UserId,
-	                        users.username AS TeacherName,
-	                        users.email AS Email,
-	                        TeacherDepartments.Name AS Department,
-	                        teachers.positionId AS PositionId
+                            teachers.id AS UserId,
+                            users.username AS TeacherName,
+                            users.email AS Email,
+                            Teachers.Department AS Department,
+                            Teachers.Position AS PositionId
                         FROM dbo.teachers
-                        JOIN dbo.users ON users.id = teachers.userId
-                        JOIN dbo.TeacherDepartments ON TeacherDepartments.Id = teachers.departmentId";
+                        JOIN dbo.users ON users.id = teachers.userId";
 
             var queryString = (await _connection.QueryAsync<TeacherInfo>(sql)).ToList();
 

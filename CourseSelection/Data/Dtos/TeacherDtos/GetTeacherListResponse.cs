@@ -10,7 +10,7 @@
         public int UserId { get; set; }
         public string TeacherName { get; set; }
         public string Email { get; set; }
-        public string Department { get; set; }
-        public int PositionId { get; set; }
+        public int Department { get; set; }
+        public int Position { get; set; }
     }
 }
