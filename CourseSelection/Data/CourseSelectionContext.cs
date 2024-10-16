@@ -24,11 +24,7 @@ public partial class CourseSelectionContext : DbContext
 
     public virtual DbSet<Student> Students { get; set; }
 
-    public virtual DbSet<StudentDepartment> StudentDepartments { get; set; }
-
     public virtual DbSet<Teacher> Teachers { get; set; }
-
-    public virtual DbSet<TeacherDepartment> TeacherDepartments { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
 
@@ -36,170 +32,123 @@ public partial class CourseSelectionContext : DbContext
     {
         modelBuilder.Entity<Class>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__classes__3213E83F86AA231D");
+            entity.HasIndex(e => e.ClassId, "UQ_Classes_ClassId").IsUnique();
 
-            entity.ToTable("classes");
-
-            entity.HasIndex(e => e.ClassId, "UQ__classes__7577347F0696B23A").IsUnique();
-
-            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.ClassId)
                 .IsRequired()
                 .HasMaxLength(256)
-                .HasColumnName("classId");
+                .HasComment("教室代碼");
             entity.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(256)
-                .HasColumnName("name");
+                .HasComment("教室名稱");
         });
 
         modelBuilder.Entity<Course>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__courses__3213E83FB2C69356");
+            entity.HasKey(e => e.Id).HasName("PK_Courese");
 
-            entity.ToTable("courses");
+            entity.HasIndex(e => e.CourseId, "UQ_Coureses_CourseId").IsUnique();
 
-            entity.HasIndex(e => e.CourseId, "UQ__courses__2AA84FD08F807AB6").IsUnique();
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.AcademicYear).HasColumnName("academicYear");
-            entity.Property(e => e.ClassId).HasColumnName("classId");
+            entity.Property(e => e.AcademicYear).HasComment("學年度");
             entity.Property(e => e.CourseId)
                 .IsRequired()
-                .HasMaxLength(256)
-                .HasColumnName("courseId");
-            entity.Property(e => e.Credits).HasColumnName("credits");
-            entity.Property(e => e.CurrentEnrollment)
-                .HasDefaultValue(0)
-                .HasColumnName("currentEnrollment");
-            entity.Property(e => e.DayOfWeek).HasColumnName("dayOfWeek");
-            entity.Property(e => e.EndTime).HasColumnName("endTime");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
-            entity.Property(e => e.Language).HasColumnName("language");
-            entity.Property(e => e.MaximumEnrollment).HasColumnName("maximumEnrollment");
+                .HasMaxLength(256);
+            entity.Property(e => e.CurrentEnrollment).HasComment("目前選課人數");
+            entity.Property(e => e.DayOfWeek).HasComment("課程為每週幾，星期一 = 1，星期二 = 2，星期三 = 3..., 星期日 = 7");
+            entity.Property(e => e.EndTime).HasComment("上課結束時間");
+            entity.Property(e => e.IsDelete).HasComment("已刪除為1，未刪除為0");
+            entity.Property(e => e.Language).HasComment("授課語言(國語 = 0, 英語 = 1)");
+            entity.Property(e => e.MaximumEnrollment).HasComment("開課人數上限");
             entity.Property(e => e.Name)
                 .IsRequired()
-                .HasColumnName("name");
-            entity.Property(e => e.Required).HasColumnName("required");
-            entity.Property(e => e.StartTime).HasColumnName("startTime");
-            entity.Property(e => e.Syllabus).HasColumnName("syllabus");
-            entity.Property(e => e.TeacherId).HasColumnName("teacherId");
+                .HasMaxLength(500)
+                .HasComment("課程名稱");
+            entity.Property(e => e.Required).HasComment("必選修(必修為1，選修為0)");
+            entity.Property(e => e.StartTime).HasComment("上課開始時間");
+            entity.Property(e => e.Syllabus)
+                .IsRequired()
+                .HasComment("課程簡介");
 
             entity.HasOne(d => d.Class).WithMany(p => p.Courses)
                 .HasForeignKey(d => d.ClassId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_courses_classes");
+                .HasConstraintName("FK_Courese_Classes");
 
             entity.HasOne(d => d.Teacher).WithMany(p => p.Courses)
                 .HasForeignKey(d => d.TeacherId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__courses__teacher__4BAC3F29");
+                .HasConstraintName("FK_Courese_Teachers");
         });
 
         modelBuilder.Entity<SelectedCourse>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__selected__3213E83FCE6CC156");
+            entity.Property(e => e.Status).HasComment("選課狀態，選課成功 = 0, 已退選 = 1");
 
-            entity.ToTable("selectedCourses");
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.CoursesId).HasColumnName("coursesId");
-            entity.Property(e => e.SelectedAt).HasColumnName("selectedAt");
-            entity.Property(e => e.StudentId).HasColumnName("studentId");
-
-            entity.HasOne(d => d.Courses).WithMany(p => p.SelectedCourses)
-                .HasForeignKey(d => d.CoursesId)
+            entity.HasOne(d => d.Course).WithMany(p => p.SelectedCourses)
+                .HasForeignKey(d => d.CourseId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__selectedC__cours__49C3F6B7");
+                .HasConstraintName("FK_SelectedCourses_Courese");
 
             entity.HasOne(d => d.Student).WithMany(p => p.SelectedCourses)
                 .HasForeignKey(d => d.StudentId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__selectedC__stude__48CFD27E");
+                .HasConstraintName("FK_SelectedCourses_Students");
         });
 
         modelBuilder.Entity<Student>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__students__3213E83FA4399641");
+            entity.HasIndex(e => e.StudentId, "UQ_Students_StudentId").IsUnique();
 
-            entity.ToTable("students");
+            entity.HasIndex(e => e.UserId, "UQ_Students_UserId").IsUnique();
 
-            entity.HasIndex(e => e.UserId, "UQ__students__CB9A1CFE2CB55CC4").IsUnique();
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.EnrollmentYear).HasColumnName("enrollmentYear");
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Department).HasComment("所屬系所(心理學系 = 1, 特殊教育學系 = 2, 資訊管理學系 = 3, 資訊工程學系 = 4, 建築學系 = 5, 會計學系 = 6, 國際經營與貿易學系 =7");
+            entity.Property(e => e.EnrollmentYear).HasComment("入學年份");
             entity.Property(e => e.StudentId)
                 .IsRequired()
                 .HasMaxLength(500)
-                .HasColumnName("studentId");
-            entity.Property(e => e.UserId).HasColumnName("userId");
+                .HasComment("學號");
 
             entity.HasOne(d => d.User).WithOne(p => p.Student)
                 .HasForeignKey<Student>(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__students__userId__46E78A0C");
-        });
-
-        modelBuilder.Entity<StudentDepartment>(entity =>
-        {
-            entity.Property(e => e.Name)
-                .IsRequired()
-                .HasMaxLength(100);
+                .HasConstraintName("FK_Students_Users");
         });
 
         modelBuilder.Entity<Teacher>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__teachers__3213E83F8F85CF9D");
+            entity.HasIndex(e => e.TeacherId, "UQ_Teachers_TeacherId").IsUnique();
 
-            entity.ToTable("teachers");
+            entity.HasIndex(e => e.UserId, "UQ_Teachers_UserId").IsUnique();
 
-            entity.HasIndex(e => e.UserId, "UQ__teachers__CB9A1CFE171CCC77").IsUnique();
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.DepartmentId)
-                .HasComment("所屬部門")
-                .HasColumnName("departmentId");
-            entity.Property(e => e.PositionId).HasColumnName("positionId");
+            entity.Property(e => e.Department).HasComment("所屬部門(理學院 = 1, 人文與教育學院 = 2, 商學院 = 3, 法學院 = 4, 電資學院 = 5, 工學院 = 6, 設計學院 =7)");
+            entity.Property(e => e.Position).HasComment("職稱(助理教授 = 1, 副教授 = 2, 教授 = 3, 講師 = 4)");
             entity.Property(e => e.TeacherId)
                 .IsRequired()
-                .HasMaxLength(500)
-                .HasColumnName("teacherId");
-            entity.Property(e => e.UserId).HasColumnName("userId");
+                .HasMaxLength(500);
 
             entity.HasOne(d => d.User).WithOne(p => p.Teacher)
                 .HasForeignKey<Teacher>(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__teachers__userId__47DBAE45");
-        });
-
-        modelBuilder.Entity<TeacherDepartment>(entity =>
-        {
-            entity.Property(e => e.Name)
-                .IsRequired()
-                .HasMaxLength(100);
+                .HasConstraintName("FK_Teachers_Users");
         });
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__users__3213E83FCEAC9358");
+            entity.HasIndex(e => e.Email, "UQ_Users_Email").IsUnique();
 
-            entity.ToTable("users");
+            entity.HasIndex(e => e.Phone, "UQ_Users_Phone").IsUnique();
 
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.CreatedAt).HasColumnName("createdAt");
-            entity.Property(e => e.Email)
-                .IsRequired()
-                .HasColumnName("email");
-            entity.Property(e => e.Password)
-                .IsRequired()
-                .HasColumnName("password");
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Email).HasMaxLength(500);
+            entity.Property(e => e.Password).HasMaxLength(500);
             entity.Property(e => e.Phone)
-                .HasMaxLength(50)
-                .HasColumnName("phone");
+                .IsRequired()
+                .HasMaxLength(50);
             entity.Property(e => e.Username)
                 .IsRequired()
-                .HasMaxLength(256)
-                .HasColumnName("username");
+                .HasMaxLength(256);
         });
 
         OnModelCreatingPartial(modelBuilder);

@@ -10,29 +10,62 @@ public partial class Course
 
     public string CourseId { get; set; }
 
+    /// <summary>
+    /// 課程名稱
+    /// </summary>
     public string Name { get; set; }
 
     public int Credits { get; set; }
 
+    /// <summary>
+    /// 必選修(必修為1，選修為0)
+    /// </summary>
     public bool Required { get; set; }
 
+    /// <summary>
+    /// 授課語言(國語 = 0, 英語 = 1)
+    /// </summary>
     public Language Language { get; set; }
 
-    public bool IsDelete { get; set; }
-
+    /// <summary>
+    /// 課程簡介
+    /// </summary>
     public string Syllabus { get; set; }
 
+    /// <summary>
+    /// 學年度
+    /// </summary>
     public short AcademicYear { get; set; }
 
+    /// <summary>
+    /// 課程為每週幾，星期一 = 1，星期二 = 2，星期三 = 3..., 星期日 = 7
+    /// </summary>
     public byte DayOfWeek { get; set; }
 
+    /// <summary>
+    /// 上課開始時間
+    /// </summary>
     public TimeOnly StartTime { get; set; }
 
+    /// <summary>
+    /// 上課結束時間
+    /// </summary>
     public TimeOnly EndTime { get; set; }
 
+    /// <summary>
+    /// 開課人數上限
+    /// </summary>
     public int MaximumEnrollment { get; set; }
 
-    public int? CurrentEnrollment { get; set; }
+    /// <summary>
+    /// 目前選課人數
+    /// </summary>
+    public int CurrentEnrollment { get; set; }
+
+    /// <summary>
+    /// 已刪除為1，未刪除為0
+    /// </summary>
+    public bool IsDelete { get; set; }
 
     public int TeacherId { get; set; }
 
