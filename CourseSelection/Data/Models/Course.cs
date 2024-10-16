@@ -1,4 +1,4 @@
-﻿using CourseSelection.Enums;
+﻿using CourseSelection.Common.Enums;
 using System;
 using System.Collections.Generic;
 

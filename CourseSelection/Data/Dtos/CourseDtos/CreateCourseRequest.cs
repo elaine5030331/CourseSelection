@@ -1,4 +1,4 @@
-﻿using CourseSelection.Enums;
+﻿using CourseSelection.Common.Enums;
 
 namespace CourseSelection.Data.Dtos.CourseDtos
 {

@@ -1,4 +1,4 @@
-﻿using CourseSelection.Enums;
+﻿using CourseSelection.Common.Enums;
 
 namespace CourseSelection.Data.Dtos.UserManagementDtos
 {
@@ -9,6 +9,6 @@ namespace CourseSelection.Data.Dtos.UserManagementDtos
         public string Email { get; set; }
         public string Phone { get; set; }
         public TeacherDepartments Department { get; set; }
-        public TeacherPosition Position { get; set; }
+        public TeacherPositions Position { get; set; }
     }
 }
