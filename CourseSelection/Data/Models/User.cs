@@ -15,7 +15,7 @@ public partial class User
 
     public string Phone { get; set; }
 
-    public DateTime? CreatedAt { get; set; }
+    public DateTime CreateAt { get; set; }
 
     public virtual Student Student { get; set; }
 

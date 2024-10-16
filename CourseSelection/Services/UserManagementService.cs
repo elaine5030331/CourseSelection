@@ -48,13 +48,12 @@ namespace CourseSelection.Services
             {
                 var departmentId = (int)request.Department;
 
-                var students = (await _studentRepo.ListAsync(s => (int)s.DepartmentId == departmentId))
+                var students = (await _studentRepo.ListAsync(s => (int)s.Department == departmentId))
                                 .OrderBy(s => s.UserId);
                 var studentCount = students.Count();
                 var studentNo = 1;
                 studentNo = (students == null) ? 1 : students.Count() + 1;
 
-                //var enrollmentYear = DateTime.Now.Year - 1911;
                 var studentId = $"S{enrollmentYear}{departmentId}{studentNo}";
 
                 var user = new User
@@ -63,12 +62,12 @@ namespace CourseSelection.Services
                     Email = request.Email,
                     Phone = request.Phone,
                     Password = request.Password,
-                    CreatedAt = DateTime.UtcNow,
+                    CreateAt = DateTime.UtcNow,
                     Student = new Student
                     {
                         StudentId = studentId,
                         EnrollmentYear = enrollmentYear,
-                        DepartmentId = request.Department
+                        Department = request.Department
                     }
                 };
 
@@ -105,7 +104,7 @@ namespace CourseSelection.Services
             try
             {
                 var departmentId = (int)request.Department;
-                var teachers = (await _teacherRepo.ListAsync(s => (int)s.DepartmentId == departmentId))
+                var teachers = (await _teacherRepo.ListAsync(s => (int)s.Department == departmentId))
                                 .OrderBy(s => s.UserId);
                 var teacherCount = teachers.Count();
                 var teacherNo = 1;
@@ -119,12 +118,12 @@ namespace CourseSelection.Services
                     Email = request.Email,
                     Phone = request.Phone,
                     Password = request.Password,
-                    CreatedAt = DateTime.UtcNow,
+                    CreateAt = DateTime.UtcNow,
                     Teacher = new Teacher
                     {
                         TeacherId = teacherId,
-                        DepartmentId = request.Department,
-                        PositionId = request.Position
+                        Department = request.Department,
+                        Position = request.Position
                     }
                 };
 

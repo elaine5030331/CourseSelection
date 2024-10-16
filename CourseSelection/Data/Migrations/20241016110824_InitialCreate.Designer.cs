@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CourseSelection.Data.Migrations
 {
     [DbContext(typeof(CourseSelectionContext))]
-    [Migration("20241015200557_changeFeildType")]
-    partial class changeFeildType
+    [Migration("20241016110824_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,8 +29,7 @@ namespace CourseSelection.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("id");
+                        .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
@@ -38,288 +37,237 @@ namespace CourseSelection.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)")
-                        .HasColumnName("classId");
+                        .HasComment("教室代碼");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)")
-                        .HasColumnName("name");
+                        .HasComment("教室名稱");
 
-                    b.HasKey("Id")
-                        .HasName("PK__classes__3213E83F86AA231D");
+                    b.HasKey("Id");
 
-                    b.HasIndex(new[] { "ClassId" }, "UQ__classes__7577347F0696B23A")
+                    b.HasIndex(new[] { "ClassId" }, "UQ_Classes_ClassId")
                         .IsUnique();
 
-                    b.ToTable("classes", (string)null);
+                    b.ToTable("Classes");
                 });
 
             modelBuilder.Entity("CourseSelection.Data.Models.Course", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("id");
+                        .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<short>("AcademicYear")
                         .HasColumnType("smallint")
-                        .HasColumnName("academicYear");
+                        .HasComment("學年度");
 
                     b.Property<int>("ClassId")
-                        .HasColumnType("int")
-                        .HasColumnName("classId");
+                        .HasColumnType("int");
 
                     b.Property<string>("CourseId")
                         .IsRequired()
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)")
-                        .HasColumnName("courseId");
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<int>("Credits")
-                        .HasColumnType("int")
-                        .HasColumnName("credits");
+                        .HasColumnType("int");
 
-                    b.Property<int?>("CurrentEnrollment")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("CurrentEnrollment")
                         .HasColumnType("int")
-                        .HasDefaultValue(0)
-                        .HasColumnName("currentEnrollment");
+                        .HasComment("目前選課人數");
 
                     b.Property<byte>("DayOfWeek")
                         .HasColumnType("tinyint")
-                        .HasColumnName("dayOfWeek");
+                        .HasComment("課程為每週幾，星期一 = 1，星期二 = 2，星期三 = 3..., 星期日 = 7");
 
                     b.Property<TimeOnly>("EndTime")
                         .HasColumnType("time")
-                        .HasColumnName("endTime");
+                        .HasComment("上課結束時間");
 
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit")
-                        .HasColumnName("isDelete");
+                        .HasComment("已刪除為1，未刪除為0");
 
                     b.Property<int>("Language")
                         .HasColumnType("int")
-                        .HasColumnName("language");
+                        .HasComment("授課語言(國語 = 0, 英語 = 1)");
 
                     b.Property<int>("MaximumEnrollment")
                         .HasColumnType("int")
-                        .HasColumnName("maximumEnrollment");
+                        .HasComment("開課人數上限");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("name");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)")
+                        .HasComment("課程名稱");
 
                     b.Property<bool>("Required")
                         .HasColumnType("bit")
-                        .HasColumnName("required");
+                        .HasComment("必選修(必修為1，選修為0)");
 
                     b.Property<TimeOnly>("StartTime")
                         .HasColumnType("time")
-                        .HasColumnName("startTime");
+                        .HasComment("上課開始時間");
 
                     b.Property<string>("Syllabus")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnName("syllabus");
+                        .HasComment("課程簡介");
 
                     b.Property<int>("TeacherId")
-                        .HasColumnType("int")
-                        .HasColumnName("teacherId");
+                        .HasColumnType("int");
 
-                    b.HasKey("Id")
-                        .HasName("PK__courses__3213E83FB2C69356");
+                    b.HasKey("Id");
 
                     b.HasIndex("ClassId");
 
                     b.HasIndex("TeacherId");
 
-                    b.HasIndex(new[] { "CourseId" }, "UQ__courses__2AA84FD08F807AB6")
+                    b.HasIndex(new[] { "CourseId" }, "UQ_Courses_CourseId")
                         .IsUnique();
 
-                    b.ToTable("courses", (string)null);
+                    b.ToTable("Courses");
                 });
 
             modelBuilder.Entity("CourseSelection.Data.Models.SelectedCourse", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("id");
+                        .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CoursesId")
-                        .HasColumnType("int")
-                        .HasColumnName("coursesId");
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime?>("SelectedAt")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("selectedAt");
+                    b.Property<DateTime>("SelectedAt")
+                        .HasColumnType("datetime2");
 
-                    b.Property<byte?>("Status")
-                        .HasColumnType("tinyint");
+                    b.Property<byte>("Status")
+                        .HasColumnType("tinyint")
+                        .HasComment("選課狀態，選課成功 = 0, 已退選 = 1");
 
                     b.Property<int>("StudentId")
-                        .HasColumnType("int")
-                        .HasColumnName("studentId");
+                        .HasColumnType("int");
 
-                    b.HasKey("Id")
-                        .HasName("PK__selected__3213E83FCE6CC156");
+                    b.HasKey("Id");
 
-                    b.HasIndex("CoursesId");
+                    b.HasIndex("CourseId");
 
                     b.HasIndex("StudentId");
 
-                    b.ToTable("selectedCourses", (string)null);
+                    b.ToTable("SelectedCourses");
                 });
 
             modelBuilder.Entity("CourseSelection.Data.Models.Student", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("id");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("DepartmentId")
                         .HasColumnType("int");
+
+                    b.Property<int>("Department")
+                        .HasColumnType("int")
+                        .HasComment("所屬系所(心理學系 = 1, 特殊教育學系 = 2, 資訊管理學系 = 3, 資訊工程學系 = 4, 建築學系 = 5, 會計學系 = 6, 國際經營與貿易學系 =7");
 
                     b.Property<int>("EnrollmentYear")
                         .HasColumnType("int")
-                        .HasColumnName("enrollmentYear");
+                        .HasComment("入學年份");
 
                     b.Property<string>("StudentId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("studentId");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)")
+                        .HasComment("學號");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int")
-                        .HasColumnName("userId");
-
-                    b.HasKey("Id")
-                        .HasName("PK__students__3213E83FA4399641");
-
-                    b.HasIndex(new[] { "UserId" }, "UQ__students__CB9A1CFE2CB55CC4")
-                        .IsUnique();
-
-                    b.ToTable("students", (string)null);
-                });
-
-            modelBuilder.Entity("CourseSelection.Data.Models.StudentDepartment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("StudentDepartments");
+                    b.HasIndex(new[] { "StudentId" }, "UQ_Students_StudentId")
+                        .IsUnique();
+
+                    b.HasIndex(new[] { "UserId" }, "UQ_Students_UserId")
+                        .IsUnique();
+
+                    b.ToTable("Students");
                 });
 
             modelBuilder.Entity("CourseSelection.Data.Models.Teacher", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("id");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("DepartmentId")
-                        .HasColumnType("int")
-                        .HasColumnName("departmentId")
-                        .HasComment("所屬部門");
-
-                    b.Property<int>("Position")
-                        .HasColumnType("int")
-                        .HasColumnName("position");
-
-                    b.Property<string>("TeacherId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("teacherId");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int")
-                        .HasColumnName("userId");
-
-                    b.HasKey("Id")
-                        .HasName("PK__teachers__3213E83F8F85CF9D");
-
-                    b.HasIndex(new[] { "UserId" }, "UQ__teachers__CB9A1CFE171CCC77")
-                        .IsUnique();
-
-                    b.ToTable("teachers", (string)null);
-                });
-
-            modelBuilder.Entity("CourseSelection.Data.Models.TeacherDepartment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Name")
+                    b.Property<int>("Department")
+                        .HasColumnType("int")
+                        .HasComment("所屬部門(理學院 = 1, 人文與教育學院 = 2, 商學院 = 3, 法學院 = 4, 電資學院 = 5, 工學院 = 6, 設計學院 =7)");
+
+                    b.Property<int>("Position")
+                        .HasColumnType("int")
+                        .HasComment("職稱(助理教授 = 1, 副教授 = 2, 教授 = 3, 講師 = 4)");
+
+                    b.Property<string>("TeacherId")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.ToTable("TeacherDepartments");
+                    b.HasIndex(new[] { "TeacherId" }, "UQ_Teachers_TeacherId")
+                        .IsUnique();
+
+                    b.HasIndex(new[] { "UserId" }, "UQ_Teachers_UserId")
+                        .IsUnique();
+
+                    b.ToTable("Teachers");
                 });
 
             modelBuilder.Entity("CourseSelection.Data.Models.User", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("id");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("createdAt");
+                    b.Property<DateTime>("CreateAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("email");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("password");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Phone")
+                        .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("phone");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)")
-                        .HasColumnName("username");
+                        .HasColumnType("nvarchar(256)");
 
-                    b.HasKey("Id")
-                        .HasName("PK__users__3213E83FCEAC9358");
+                    b.HasKey("Id");
 
-                    b.ToTable("users", (string)null);
+                    b.HasIndex(new[] { "Email" }, "UQ_Users_Email")
+                        .IsUnique()
+                        .HasFilter("[Email] IS NOT NULL");
+
+                    b.HasIndex(new[] { "Phone" }, "UQ_Users_Phone")
+                        .IsUnique();
+
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("CourseSelection.Data.Models.Course", b =>
@@ -328,13 +276,13 @@ namespace CourseSelection.Data.Migrations
                         .WithMany("Courses")
                         .HasForeignKey("ClassId")
                         .IsRequired()
-                        .HasConstraintName("FK_courses_classes");
+                        .HasConstraintName("FK_Courses_Classes");
 
                     b.HasOne("CourseSelection.Data.Models.Teacher", "Teacher")
                         .WithMany("Courses")
                         .HasForeignKey("TeacherId")
                         .IsRequired()
-                        .HasConstraintName("FK__courses__teacher__4BAC3F29");
+                        .HasConstraintName("FK_Courses_Teachers");
 
                     b.Navigation("Class");
 
@@ -343,19 +291,19 @@ namespace CourseSelection.Data.Migrations
 
             modelBuilder.Entity("CourseSelection.Data.Models.SelectedCourse", b =>
                 {
-                    b.HasOne("CourseSelection.Data.Models.Course", "Courses")
+                    b.HasOne("CourseSelection.Data.Models.Course", "Course")
                         .WithMany("SelectedCourses")
-                        .HasForeignKey("CoursesId")
+                        .HasForeignKey("CourseId")
                         .IsRequired()
-                        .HasConstraintName("FK__selectedC__cours__49C3F6B7");
+                        .HasConstraintName("FK_SelectedCourses_Courese");
 
                     b.HasOne("CourseSelection.Data.Models.Student", "Student")
                         .WithMany("SelectedCourses")
                         .HasForeignKey("StudentId")
                         .IsRequired()
-                        .HasConstraintName("FK__selectedC__stude__48CFD27E");
+                        .HasConstraintName("FK_SelectedCourses_Students");
 
-                    b.Navigation("Courses");
+                    b.Navigation("Course");
 
                     b.Navigation("Student");
                 });
@@ -366,7 +314,7 @@ namespace CourseSelection.Data.Migrations
                         .WithOne("Student")
                         .HasForeignKey("CourseSelection.Data.Models.Student", "UserId")
                         .IsRequired()
-                        .HasConstraintName("FK__students__userId__46E78A0C");
+                        .HasConstraintName("FK_Students_Users");
 
                     b.Navigation("User");
                 });
@@ -377,7 +325,7 @@ namespace CourseSelection.Data.Migrations
                         .WithOne("Teacher")
                         .HasForeignKey("CourseSelection.Data.Models.Teacher", "UserId")
                         .IsRequired()
-                        .HasConstraintName("FK__teachers__userId__47DBAE45");
+                        .HasConstraintName("FK_Teachers_Users");
 
                     b.Navigation("User");
                 });

@@ -9,13 +9,16 @@ public partial class SelectedCourse
 
     public int StudentId { get; set; }
 
-    public int CoursesId { get; set; }
+    public int CourseId { get; set; }
 
-    public byte? Status { get; set; }
+    /// <summary>
+    /// 選課狀態，選課成功 = 0, 已退選 = 1
+    /// </summary>
+    public byte Status { get; set; }
 
-    public DateTime? SelectedAt { get; set; }
+    public DateTime SelectedAt { get; set; }
 
-    public virtual Course Courses { get; set; }
+    public virtual Course Course { get; set; }
 
     public virtual Student Student { get; set; }
 }
