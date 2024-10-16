@@ -14,7 +14,7 @@ public partial class SelectedCourse
     /// <summary>
     /// 選課狀態，選課成功 = 0, 已退選 = 1
     /// </summary>
-    public byte Status { get; set; }
+    public int Status { get; set; }
 
     public DateTime SelectedAt { get; set; }
 

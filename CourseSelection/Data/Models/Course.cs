@@ -40,7 +40,7 @@ public partial class Course
     /// <summary>
     /// 課程為每週幾，星期一 = 1，星期二 = 2，星期三 = 3..., 星期日 = 7
     /// </summary>
-    public byte DayOfWeek { get; set; }
+    public int DayOfWeek { get; set; }
 
     /// <summary>
     /// 上課開始時間

@@ -137,8 +137,12 @@ public partial class CourseSelectionContext : DbContext
 
             entity.HasIndex(e => e.Phone, "UQ_Users_Phone").IsUnique();
 
-            entity.Property(e => e.Email).HasMaxLength(500);
-            entity.Property(e => e.Password).HasMaxLength(500);
+            entity.Property(e => e.Email)
+                .IsRequired()
+                .HasMaxLength(500);
+            entity.Property(e => e.Password)
+                .IsRequired()
+                .HasMaxLength(500);
             entity.Property(e => e.Phone)
                 .IsRequired()
                 .HasMaxLength(50);
