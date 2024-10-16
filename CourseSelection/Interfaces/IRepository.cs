@@ -13,5 +13,6 @@ namespace CourseSelection.Interfaces
         Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> expression);
         Task<bool> AnyAsync(Expression<Func<TEntity, bool>> expression);
         Task<List<TEntity>> ListAsync(Expression<Func<TEntity, bool>> expression);
+        Task<List<TEntity>> GetAllAsync();
     }
 }

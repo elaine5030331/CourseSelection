@@ -2,9 +2,11 @@
 using CourseSelection.Data;
 using CourseSelection.Interfaces;
 using CourseSelection.Services;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using System.Data;
 using System.Reflection;
 
 
@@ -25,13 +27,17 @@ namespace CourseSelection
             {
                 var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 opt.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+                opt.SchemaFilter<SwaggerSchemaFilter>();
             });
 
             //¸ê®Æ®wµù¥U
             builder.Services.AddDbContext<CourseSelectionContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("CourseSelectionDB")));
+            //Dapper
+            builder.Services.AddScoped<IDbConnection>(opt => new SqlConnection(builder.Configuration.GetConnectionString("CourseSelectionDB")));
             
             builder.Services.AddScoped(typeof(IRepository<>), typeof(EFRepository<>));
             builder.Services.AddScoped<IUserManagementService, UserManagementService>();
+            builder.Services.AddScoped<ICourseService, CourseService>();
 
             var app = builder.Build();
 

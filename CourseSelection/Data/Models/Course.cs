@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CourseSelection.Enums;
+using System;
 using System.Collections.Generic;
 
 namespace CourseSelection.Data.Models;
@@ -15,7 +16,7 @@ public partial class Course
 
     public bool Required { get; set; }
 
-    public string Language { get; set; }
+    public Language Language { get; set; }
 
     public bool IsDelete { get; set; }
 
