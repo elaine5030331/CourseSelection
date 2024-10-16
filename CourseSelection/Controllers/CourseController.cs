@@ -153,6 +153,8 @@ namespace CourseSelection.Controllers
         /// 1. 找不到對應的課程
         /// 2. 刪除課程失敗
         /// </response>
+        /// <response code ="401">未通過身分驗證</response>
+        /// <response code ="403">權限不足</response>
         [HttpDelete("DeleteCourse/{id}")]
         public async Task<IActionResult> DeleteCourse(int id)
         {
