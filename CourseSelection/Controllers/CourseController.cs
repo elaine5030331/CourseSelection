@@ -32,7 +32,7 @@ namespace CourseSelection.Controllers
         ///        "required": true(必修為 true，選修為 false),
         ///        "language": 1 (國語 = 0, 英語 = 1)
         ///        "syllabus": "本課程旨在介紹現代心理學的各種基礎知識，引導學生取得心理學重要學理與其個人日常生活之間的連結，並對心理學的理論與應用有一個概括的認識",
-        ///        "dayOfWeek": 1(課程為每週幾，星期一 = 1，星期二 = 2，星期三 = 3..., 星期日 = 7),
+        ///        "dayOfWeek": 1(課程為每週幾，星期一 = 0，星期二 = 1，星期三 = 2..., 星期日 = 6),
         ///        "startTime": "09:00:00",
         ///        "endTime": "12:00:00",
         ///        "maximumEnrollment": 85,
@@ -110,7 +110,7 @@ namespace CourseSelection.Controllers
         ///        "required": true(必修為 true，選修為 false),
         ///        "language": 1 (國語 = 0, 英語 = 1)
         ///        "syllabus": "本課程涵蓋心理學的基礎知識，每週設定教學主題，教授心理學知識及其生活應用。",
-        ///        "dayOfWeek": 1(課程為每週幾，星期一 = 1，星期二 = 2，星期三 = 3..., 星期日 = 7),
+        ///        "dayOfWeek": 1(課程為每週幾，星期一 = 0，星期二 = 1，星期三 = 2..., 星期日 = 6),
         ///        "startTime": "09:00:00",
         ///        "endTime": "12:00:00",
         ///        "maximumEnrollment": 85,

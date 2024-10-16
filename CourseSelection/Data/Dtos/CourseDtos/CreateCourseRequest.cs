@@ -10,7 +10,7 @@ namespace CourseSelection.Data.Dtos.CourseDtos
         public bool Required { get; set; }
         public Language Language { get; set; }
         public string Syllabus { get; set; }
-        public byte DayOfWeek { get; set; }
+        public DayOfWeekEnum DayOfWeek { get; set; }
         public TimeOnly StartTime { get; set; }
         public TimeOnly EndTime { get; set; }
         public int MaximumEnrollment { get; set; }

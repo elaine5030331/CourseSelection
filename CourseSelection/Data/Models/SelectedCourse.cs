@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CourseSelection.Common.Enums;
+using System;
 using System.Collections.Generic;
 
 namespace CourseSelection.Data.Models;
@@ -14,7 +15,7 @@ public partial class SelectedCourse
     /// <summary>
     /// 選課狀態，選課成功 = 0, 已退選 = 1
     /// </summary>
-    public int Status { get; set; }
+    public SelectedCourseStatus Status { get; set; }
 
     public DateTime SelectedAt { get; set; }
 
