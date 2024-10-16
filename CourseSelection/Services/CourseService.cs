@@ -2,19 +2,27 @@
 using CourseSelection.Data.Dtos.CourseDtos;
 using CourseSelection.Data.Models;
 using CourseSelection.Interfaces;
+using Dapper;
+using System.Data;
 
 namespace CourseSelection.Services
 {
     public class CourseService : ICourseService
     {
         private readonly IRepository<Course> _courseRepo;
+        private readonly IRepository<Teacher> _teacherRepo;
+        private readonly IRepository<Class> _classRepo;
+        private readonly IDbConnection _connection;
         private readonly ILogger<CourseService> _logger;
         private readonly int academicYear = DateTime.UtcNow.Year - 1911;
 
-        public CourseService(IRepository<Course> courseRepo, ILogger<CourseService> logger)
+        public CourseService(IRepository<Course> courseRepo, ILogger<CourseService> logger, IRepository<Teacher> teacherRepo, IRepository<Class> classRepo, IDbConnection connection)
         {
             _courseRepo = courseRepo;
             _logger = logger;
+            _teacherRepo = teacherRepo;
+            _classRepo = classRepo;
+            _connection = connection;
         }
 
         public async Task<OperationResult<CreateCourseResponse>> CreateCourseAsync(CreateCourseRequest request)
@@ -87,9 +95,37 @@ namespace CourseSelection.Services
             }
         }
 
-        public Task<OperationResult> GetCourseListAsync(GetCourseListRequest request)
+        public async Task<GetCourseListResponse> GetCourseListAsync()
         {
-            throw new NotImplementedException();
+            var sql = @"
+                        SELECT 
+	                        courses.id AS Id,
+	                        courseId AS CourseId,
+	                        courses.[name] AS CourseName,
+	                        credits AS Credits,
+	                        [required] AS Required,
+	                        [language] AS Language,
+	                        syllabus AS Syllabus,
+	                        academicYear AS AcademicYear,
+	                        [dayOfWeek] AS DayOfWeek,
+	                        startTime AS StartTime,
+	                        endTime AS EndTime,
+	                        maximumEnrollment AS MaximumEnrollment,
+                            classes.id AS ClassId,
+	                        classes.[name] AS ClassName,
+	                        teachers.id AS TeacherId,
+	                        users.username AS TeacherName,
+	                        users.email AS TeacherEmail
+                        FROM dbo.courses
+                        JOIN classes ON classes.id = courses.classId
+                        JOIN teachers ON teachers.id = courses.teacherId
+                        JOIN users ON users.id = teachers.userId";
+
+            var queryResult = (await _connection.QueryAsync<CourseItem>(sql)).ToList();
+            var result = new GetCourseListResponse() { CourseInfo = queryResult };
+
+            return result;
+
         }
 
         public async Task<OperationResult<UpdateCourseResponse>> UpdateCourseAsync(UpdateCourseRequest request)

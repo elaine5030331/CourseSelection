@@ -6,7 +6,7 @@ namespace CourseSelection.Interfaces
     public interface ICourseService
     {
         Task<OperationResult<CreateCourseResponse>> CreateCourseAsync(CreateCourseRequest request);
-        Task<OperationResult> GetCourseListAsync(GetCourseListRequest request);
+        Task<GetCourseListResponse> GetCourseListAsync();
         Task<OperationResult<UpdateCourseResponse>> UpdateCourseAsync(UpdateCourseRequest request);
         Task<OperationResult> DeleteCourseAsync(int id);
     }
