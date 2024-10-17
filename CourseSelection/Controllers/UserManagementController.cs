@@ -43,7 +43,8 @@ namespace CourseSelection.Controllers
         /// 5. 此電話已註冊過
         /// 6. 信箱格式有誤
         /// 7. 電話格式有誤
-        /// 8. 新增學生失敗
+        /// 8. 無此系所
+        /// 9. 新增學生失敗
         /// </response>
         /// <response code ="401">未通過身分驗證</response>
         /// <response code ="403">權限不足</response>
@@ -84,7 +85,9 @@ namespace CourseSelection.Controllers
         /// 5. 此電話已註冊過
         /// 6. 信箱格式有誤
         /// 7. 電話格式有誤
-        /// 8. 新增講師失敗
+        /// 8. 無此部門
+        /// 9. 無此職稱
+        /// 10. 新增講師失敗
         /// </response>
         /// <response code ="401">未通過身分驗證</response>
         /// <response code ="403">權限不足</response>
