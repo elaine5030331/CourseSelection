@@ -1,4 +1,6 @@
-﻿using CourseSelection.Interfaces;
+﻿using CourseSelection.Data.Dtos.CourseDtos;
+using CourseSelection.Data.Dtos.TeacherDtos;
+using CourseSelection.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -37,6 +39,7 @@ namespace CourseSelection.Controllers
         /// <response code ="200">取得授課講師列表成功</response>
         /// <response code ="404">找不到任何講師資料</response>
         [HttpGet("GetTeacherList")]
+        [ProducesResponseType(typeof(GetTeacherListResponse), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetTeacherList()
         {
             var result = await _teacherService.GetTeacherListAsync();
