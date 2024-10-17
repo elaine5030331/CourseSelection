@@ -48,11 +48,12 @@ namespace CourseSelection.Controllers
         /// <response code ="401">未通過身分驗證</response>
         /// <response code ="403">權限不足</response>
         [HttpPost("CreateStudent")]
+        [ProducesResponseType(typeof(CreateStudentResponse), StatusCodes.Status200OK)]
         public async Task<IActionResult> CreateStudent(CreateStudentRequest request)
         {
             var result = await _userManagementService.CreateStudent(request);
             if (result.IsSuccess)
-                return Ok();
+                return Ok(result.ResultDto);
             return BadRequest(result.ErrorMessage);
         }
 

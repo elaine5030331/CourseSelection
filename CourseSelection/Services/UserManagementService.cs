@@ -25,24 +25,24 @@ namespace CourseSelection.Services
             _logger = logger;
         }
 
-        public async Task<OperationResult> CreateStudent(CreateStudentRequest request)
+        public async Task<OperationResult<CreateStudentResponse>> CreateStudent(CreateStudentRequest request)
         {
             if (string.IsNullOrEmpty(request.Name))
-                return new OperationResult("請輸入姓名");
+                return new OperationResult<CreateStudentResponse>("請輸入姓名");
             if (string.IsNullOrEmpty(request.Email))
-                return new OperationResult("請輸入信箱");
+                return new OperationResult<CreateStudentResponse>("請輸入信箱");
             if (string.IsNullOrEmpty(request.Phone))
-                return new OperationResult("請輸入電話");
+                return new OperationResult<CreateStudentResponse>("請輸入電話");
 
             if ((await _userRepo.AnyAsync(x => x.Email == request.Email)))
-                return new OperationResult("此信箱已註冊過");
+                return new OperationResult<CreateStudentResponse>("此信箱已註冊過");
             if ((await _userRepo.AnyAsync(x => x.Phone == request.Phone)))
-                return new OperationResult("此電話已註冊過");
+                return new OperationResult<CreateStudentResponse>("此電話已註冊過");
 
             if (!Regex.IsMatch(request.Email, emailPattern))
-                return new OperationResult("信箱格式有誤");
+                return new OperationResult<CreateStudentResponse>("信箱格式有誤");
             if (!Regex.IsMatch(request.Phone, phonePattern))
-                return new OperationResult("電話格式有誤");
+                return new OperationResult<CreateStudentResponse>("電話格式有誤");
 
             try
             {
@@ -73,12 +73,19 @@ namespace CourseSelection.Services
 
                 await _userRepo.AddAsync(user);
 
-                return new OperationResult();
+                return new OperationResult<CreateStudentResponse>()
+                {
+                    IsSuccess = true,
+                    ResultDto = new CreateStudentResponse()
+                    {
+                        Id = user.Student.Id
+                    }
+                };
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return new OperationResult("新增學生失敗");
+                return new OperationResult<CreateStudentResponse>("新增學生失敗");
             }
         }
 
@@ -128,8 +135,6 @@ namespace CourseSelection.Services
                 };
 
                 await _userRepo.AddAsync(user);
-
-                //var result = (await _teacherRepo.FirstOrDefaultAsync(t => t.UserId == user.Id)).Id;
 
                 return new OperationResult<CreateTeacherResponse>()
                 {
