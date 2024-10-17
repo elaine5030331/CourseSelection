@@ -1,4 +1,5 @@
-﻿using CourseSelection.Data.Dtos.UserManagementDtos;
+﻿using CourseSelection.Data.Dtos.CourseDtos;
+using CourseSelection.Data.Dtos.UserManagementDtos;
 using CourseSelection.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -87,11 +88,12 @@ namespace CourseSelection.Controllers
         /// <response code ="401">未通過身分驗證</response>
         /// <response code ="403">權限不足</response>
         [HttpPost("CreateTeacher")]
+        [ProducesResponseType(typeof(CreateTeacherResponse), StatusCodes.Status200OK)]
         public async Task<IActionResult> CreateTeacher(CreateTeacherRequest request)
         {
             var result = await _userManagementService.CreateTeacher(request);
             if(result.IsSuccess)
-                return Ok();
+                return Ok(result.ResultDto);
             return BadRequest(result.ErrorMessage);
         }
     }
