@@ -48,7 +48,11 @@ namespace CourseSelection.Controllers
         /// 3. 請輸入開課人數上限
         /// 4. 請輸入上課教室
         /// 5. 請輸入授課講師
-        /// 6. 新增課程失敗
+        /// 6. 無此語言
+        /// 7. 一星期只有七天ㄋㄟ
+        /// 8. 目前沒有這堂課
+        /// 9. 目前沒有這位講師
+        /// 10. 新增課程失敗
         /// </response>
         /// <response code ="401">未通過身分驗證</response>
         /// <response code ="403">權限不足</response>
@@ -131,7 +135,11 @@ namespace CourseSelection.Controllers
         /// 5. 請輸入上課教室
         /// 6. 請輸入授課講師
         /// 7. 找不到此課程
-        /// 8. 更新課程內容失敗
+        /// 8. 無此語言
+        /// 9. 一星期只有七天ㄋㄟ
+        /// 10. 目前沒有這堂課
+        /// 11. 目前沒有這位講師
+        /// 12. 更新課程內容失敗
         /// </response>
         /// <response code ="401">未通過身分驗證</response>
         /// <response code ="403">權限不足</response>

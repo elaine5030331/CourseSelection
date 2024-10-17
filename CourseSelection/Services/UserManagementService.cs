@@ -1,4 +1,5 @@
-﻿using CourseSelection.Data;
+﻿using CourseSelection.Common.Enums;
+using CourseSelection.Data;
 using CourseSelection.Data.Dtos.UserManagementDtos;
 using CourseSelection.Data.Models;
 using CourseSelection.Interfaces;
@@ -55,6 +56,9 @@ namespace CourseSelection.Services
                 studentNo = (students == null) ? 1 : students.Count() + 1;
 
                 var studentId = $"S{enrollmentYear}{departmentId}{studentNo}";
+
+                if (!Enum.IsDefined(typeof(StudentDepartments), request.Department))
+                    return new OperationResult<CreateStudentResponse>("無此系所");
 
                 var user = new User
                 {
@@ -118,6 +122,12 @@ namespace CourseSelection.Services
                 teacherNo = (teachers == null) ? 1 : teachers.Count() + 1;
 
                 var teacherId = $"T{enrollmentYear}{departmentId}{teacherNo}";
+
+                if (!Enum.IsDefined(typeof(TeacherDepartments), request.Department))
+                    return new OperationResult<CreateTeacherResponse>("無此部門");
+
+                if (!Enum.IsDefined(typeof(TeacherPositions), request.Position))
+                    return new OperationResult<CreateTeacherResponse>("無此職稱");
 
                 var user = new User
                 {

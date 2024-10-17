@@ -1,5 +1,7 @@
-﻿using CourseSelection.Data;
+﻿using CourseSelection.Common.Enums;
+using CourseSelection.Data;
 using CourseSelection.Data.Dtos.CourseDtos;
+using CourseSelection.Data.Dtos.UserManagementDtos;
 using CourseSelection.Data.Models;
 using CourseSelection.Interfaces;
 using Dapper;
@@ -41,6 +43,18 @@ namespace CourseSelection.Services
 
             try
             {
+                if (!Enum.IsDefined(typeof(Language), request.Language))
+                    return new OperationResult<CreateCourseResponse>("無此語言");
+
+                if (!Enum.IsDefined(typeof(DayOfWeekEnum), request.DayOfWeek))
+                    return new OperationResult<CreateCourseResponse>("一星期只有七天ㄋㄟ");
+
+                if (!await _classRepo.AnyAsync(c => c.Id == request.ClassId))
+                    return new OperationResult<CreateCourseResponse>("目前沒有這堂課");
+
+                if (!await _teacherRepo.AnyAsync(t => t.Id == request.TeacherId))
+                    return new OperationResult<CreateCourseResponse>("目前沒有這位講師");
+
                 var course = new Course()
                 {
                     CourseId = request.CourseId,
@@ -185,6 +199,18 @@ namespace CourseSelection.Services
                 var course = await _courseRepo.GetByIdAsync(request.Id);
                 if (course == null)
                     return new OperationResult<UpdateCourseResponse>("找不到此課程");
+
+                if (!Enum.IsDefined(typeof(Language), request.Language))
+                    return new OperationResult<UpdateCourseResponse>("無此語言");
+
+                if (!Enum.IsDefined(typeof(DayOfWeekEnum), request.DayOfWeek))
+                    return new OperationResult<UpdateCourseResponse>("一星期只有七天ㄋㄟ");
+
+                if (!await _classRepo.AnyAsync(c => c.Id == request.ClassId))
+                    return new OperationResult<UpdateCourseResponse>("目前沒有這堂課");
+
+                if (!await _teacherRepo.AnyAsync(t => t.Id == request.TeacherId))
+                    return new OperationResult<UpdateCourseResponse>("目前沒有這位講師");
 
                 course.CourseId = request.CourseId;
                 course.Name = request.Name;
