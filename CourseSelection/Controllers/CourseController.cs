@@ -19,8 +19,8 @@ namespace CourseSelection.Controllers
         /// <summary>
         /// 新增課程
         /// </summary>
-        /// <param name="request"></param>
-        /// <returns>id</returns>
+        /// <param name="request">課程資料</param>
+        /// <returns> 課程ID </returns>
         /// <remarks>
         /// Sample request:<br/>
         /// 
@@ -53,6 +53,7 @@ namespace CourseSelection.Controllers
         /// <response code ="401">未通過身分驗證</response>
         /// <response code ="403">權限不足</response>
         [HttpPost("CreateCourse")]
+        [ProducesResponseType(typeof(CreateCourseResponse), StatusCodes.Status200OK)]
         public async Task<IActionResult> CreateCourse(CreateCourseRequest request)
         {
             var result = await _courseService.CreateCourseAsync(request);
@@ -68,6 +69,7 @@ namespace CourseSelection.Controllers
         /// <response code ="200">取得課程列表成功</response>
         /// <response code ="404">找不到任何課程內容</response>
         [HttpGet("GetCourseList")]
+        [ProducesResponseType(typeof(GetCourseListResponse), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetCourseList()
         {
             var result = await _courseService.GetCourseListAsync();
@@ -84,6 +86,7 @@ namespace CourseSelection.Controllers
         /// <response code ="200">取得授課講師所開課程列表成功</response>
         /// <response code ="404">找不到任何該講師對應的課程內容</response>
         [HttpGet("GetCourseListByTeacherId/{id}")]
+        [ProducesResponseType(typeof(GetCourseListByTeacherIdResponse), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetCourseListByTeacherId(int id)
         {
             var result = await _courseService.GetCourseListByTeacherIdAsync(id);
@@ -97,7 +100,7 @@ namespace CourseSelection.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <param name="request"></param>
-        /// <returns></returns>
+        /// <returns>課程ID</returns>
         /// <remarks>
         /// Sample request:<br/>
         /// 
@@ -133,6 +136,7 @@ namespace CourseSelection.Controllers
         /// <response code ="401">未通過身分驗證</response>
         /// <response code ="403">權限不足</response>
         [HttpPut("UpdateCourse/{id}")]
+        [ProducesResponseType(typeof(UpdateCourseResponse), StatusCodes.Status200OK)]
         public async Task<IActionResult> UpdateCourse(int id, UpdateCourseRequest request)
         {
             if (id != request.Id)

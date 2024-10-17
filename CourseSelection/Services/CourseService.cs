@@ -120,7 +120,8 @@ namespace CourseSelection.Services
                         FROM dbo.courses
                         JOIN classes ON classes.id = courses.classId
                         JOIN teachers ON teachers.id = courses.teacherId
-                        JOIN users ON users.id = teachers.userId";
+                        JOIN users ON users.id = teachers.userId
+                        WHERE IsDelete = 0";
 
             var queryResult = (await _connection.QueryAsync<CourseItem>(sql)).ToList();
             var result = new GetCourseListResponse() { CourseInfo = queryResult };
@@ -155,7 +156,8 @@ namespace CourseSelection.Services
                         JOIN classes ON classes.id = courses.classId
                         JOIN teachers ON teachers.id = courses.teacherId
                         JOIN users ON users.id = teachers.userId
-                        WHERE teachers.id = @TeacherId";
+                        WHERE teachers.id = @TeacherId
+                        AND IsDelete = 0";
 
             var queryString = (await _connection.QueryAsync<CourseInfoById>(sql, parameter)).ToList();
             var result = new GetCourseListByTeacherIdResponse()

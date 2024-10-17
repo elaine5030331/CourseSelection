@@ -5,7 +5,7 @@ namespace CourseSelection.Interfaces
 {
     public interface IUserManagementService
     {
-        Task<OperationResult> CreateTeacher(CreateTeacherRequest request);
-        Task<OperationResult> CreateStudent(CreateStudentRequest request);
+        Task<OperationResult<CreateTeacherResponse>> CreateTeacher(CreateTeacherRequest request);
+        Task<OperationResult<CreateStudentResponse>> CreateStudent(CreateStudentRequest request);
     }
 }
