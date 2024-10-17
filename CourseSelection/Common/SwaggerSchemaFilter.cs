@@ -14,6 +14,13 @@ namespace CourseSelection.Common
                 schema.Format = "time";
                 schema.Example = new OpenApiString("09:00:00");
             }
+
+            if (context.Type == typeof(TimeSpan))
+            {
+                schema.Type = "string";
+                schema.Format = "time";
+                schema.Example = new OpenApiString("09:00:00");
+            }
         }
     }
 }
