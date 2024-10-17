@@ -46,8 +46,6 @@ namespace CourseSelectionTest
         [Test, TestCaseSource(nameof(CreateTeacherTestCases))]
         public async Task CreateTeacher_WhenValueIsInvalid_ReturnError(string name, string phone, string email, string expectedMessage)
         {
-            var request = new CreateTeacherRequest { Name = name, Phone = phone, Email = email };
-
             var result = await _userManagementService.CreateTeacher(new CreateTeacherRequest
             {
                 Name = name,
