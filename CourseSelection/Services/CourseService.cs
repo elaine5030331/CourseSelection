@@ -13,17 +13,19 @@ namespace CourseSelection.Services
     public class CourseService : ICourseService
     {
         private readonly IRepository<Course> _courseRepo;
+        private readonly IRepository<Class> _classRepo;
         private readonly IRepository<Teacher> _teacherRepo;
         private readonly IDbConnection _connection;
         private readonly ILogger<CourseService> _logger;
         private readonly int academicYear = DateTime.UtcNow.Year - 1911;
 
-        public CourseService(IRepository<Course> courseRepo, ILogger<CourseService> logger, IDbConnection connection, IRepository<Teacher> teacherRepo)
+        public CourseService(IRepository<Course> courseRepo, ILogger<CourseService> logger, IDbConnection connection, IRepository<Teacher> teacherRepo, IRepository<Class> classRepo)
         {
             _courseRepo = courseRepo;
             _logger = logger;
             _connection = connection;
             _teacherRepo = teacherRepo;
+            _classRepo = classRepo;
         }
 
         public async Task<OperationResult<CreateCourseResponse>> CreateCourseAsync(CreateCourseRequest request)
@@ -32,7 +34,7 @@ namespace CourseSelection.Services
                 return new OperationResult<CreateCourseResponse>("請輸入課程編號");
             if (string.IsNullOrEmpty(request.Name))
                 return new OperationResult<CreateCourseResponse>("請輸入課程名稱");
-            if (IsMaximumEnrollmentValid(request.MaximumEnrollment))
+            if (!IsEnrollmentValid(request.MaximumEnrollment))
                 return new OperationResult<CreateCourseResponse>("開課人數最少須10人，最多120人");
             if (request.ClassId <= 0)
                 return new OperationResult<CreateCourseResponse>("請輸入上課教室");
@@ -47,8 +49,8 @@ namespace CourseSelection.Services
                 if (!Enum.IsDefined(typeof(DayOfWeekEnum), request.DayOfWeek))
                     return new OperationResult<CreateCourseResponse>("一星期只有七天ㄋㄟ");
 
-                if (!await _courseRepo.AnyAsync(c => c.Id == request.ClassId))
-                    return new OperationResult<CreateCourseResponse>("目前沒有這堂課");
+                if (!await _classRepo.AnyAsync(c => c.Id == request.ClassId))
+                    return new OperationResult<CreateCourseResponse>("目前沒有這間教室");
 
                 if (!await _teacherRepo.AnyAsync(t => t.Id == request.TeacherId))
                     return new OperationResult<CreateCourseResponse>("目前沒有這位講師");
@@ -85,7 +87,7 @@ namespace CourseSelection.Services
             }
         }
 
-        public bool IsMaximumEnrollmentValid(int nums)
+        public bool IsEnrollmentValid(int nums)
         {
             return nums >= 10 && nums <= 120;
         }
