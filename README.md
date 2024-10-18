@@ -3,6 +3,7 @@
 - Version : .Net 8
 - Framework : Asp .Net Core WebAPI
 - DB : MSSQL
+- Unit Test : NUnit
 
 ## Database settings
 > Please click the link below for the DB design, or you can use the SQL commands in MSSQL, which include the data structure and the data.
