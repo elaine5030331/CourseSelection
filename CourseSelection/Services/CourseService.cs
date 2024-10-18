@@ -32,7 +32,7 @@ namespace CourseSelection.Services
                 return new OperationResult<CreateCourseResponse>("請輸入課程編號");
             if (string.IsNullOrEmpty(request.Name))
                 return new OperationResult<CreateCourseResponse>("請輸入課程名稱");
-            if (request.MaximumEnrollment < 10 || request.MaximumEnrollment > 120)
+            if (IsMaximumEnrollmentValid(request.MaximumEnrollment))
                 return new OperationResult<CreateCourseResponse>("開課人數最少須10人，最多120人");
             if (request.ClassId <= 0)
                 return new OperationResult<CreateCourseResponse>("請輸入上課教室");
@@ -83,6 +83,11 @@ namespace CourseSelection.Services
                     ErrorMessage = "新增課程失敗"
                 };
             }
+        }
+
+        public bool IsMaximumEnrollmentValid(int nums)
+        {
+            return nums >= 10 && nums <= 120;
         }
 
         public async Task<OperationResult> DeleteCourseAsync(int id)
