@@ -34,7 +34,7 @@ namespace CourseSelection.Services
                 return new OperationResult<CreateCourseResponse>("請輸入課程編號");
             if (string.IsNullOrEmpty(request.Name))
                 return new OperationResult<CreateCourseResponse>("請輸入課程名稱");
-            if (IsEnrollmentValid(request.MaximumEnrollment))
+            if (!IsEnrollmentValid(request.MaximumEnrollment))
                 return new OperationResult<CreateCourseResponse>("開課人數最少須10人，最多120人");
             if (request.ClassId <= 0)
                 return new OperationResult<CreateCourseResponse>("請輸入上課教室");
