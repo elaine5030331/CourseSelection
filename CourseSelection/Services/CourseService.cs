@@ -13,15 +13,17 @@ namespace CourseSelection.Services
     public class CourseService : ICourseService
     {
         private readonly IRepository<Course> _courseRepo;
+        private readonly IRepository<Teacher> _teacherRepo;
         private readonly IDbConnection _connection;
         private readonly ILogger<CourseService> _logger;
         private readonly int academicYear = DateTime.UtcNow.Year - 1911;
 
-        public CourseService(IRepository<Course> courseRepo, ILogger<CourseService> logger, IDbConnection connection)
+        public CourseService(IRepository<Course> courseRepo, ILogger<CourseService> logger, IDbConnection connection, IRepository<Teacher> teacherRepo)
         {
             _courseRepo = courseRepo;
             _logger = logger;
             _connection = connection;
+            _teacherRepo = teacherRepo;
         }
 
         public async Task<OperationResult<CreateCourseResponse>> CreateCourseAsync(CreateCourseRequest request)
@@ -45,7 +47,7 @@ namespace CourseSelection.Services
                 if (!Enum.IsDefined(typeof(DayOfWeekEnum), request.DayOfWeek))
                     return new OperationResult<CreateCourseResponse>("一星期只有七天ㄋㄟ");
 
-                if (!await _classRepo.AnyAsync(c => c.Id == request.ClassId))
+                if (!await _courseRepo.AnyAsync(c => c.Id == request.ClassId))
                     return new OperationResult<CreateCourseResponse>("目前沒有這堂課");
 
                 if (!await _teacherRepo.AnyAsync(t => t.Id == request.TeacherId))
@@ -202,7 +204,7 @@ namespace CourseSelection.Services
                 if (!Enum.IsDefined(typeof(DayOfWeekEnum), request.DayOfWeek))
                     return new OperationResult<UpdateCourseResponse>("一星期只有七天ㄋㄟ");
 
-                if (!await _classRepo.AnyAsync(c => c.Id == request.ClassId))
+                if (!await _courseRepo.AnyAsync(c => c.Id == request.ClassId))
                     return new OperationResult<UpdateCourseResponse>("目前沒有這堂課");
 
                 if (!await _teacherRepo.AnyAsync(t => t.Id == request.TeacherId))
