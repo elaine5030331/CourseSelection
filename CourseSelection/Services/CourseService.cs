@@ -13,18 +13,14 @@ namespace CourseSelection.Services
     public class CourseService : ICourseService
     {
         private readonly IRepository<Course> _courseRepo;
-        private readonly IRepository<Teacher> _teacherRepo;
-        private readonly IRepository<Class> _classRepo;
         private readonly IDbConnection _connection;
         private readonly ILogger<CourseService> _logger;
         private readonly int academicYear = DateTime.UtcNow.Year - 1911;
 
-        public CourseService(IRepository<Course> courseRepo, ILogger<CourseService> logger, IRepository<Teacher> teacherRepo, IRepository<Class> classRepo, IDbConnection connection)
+        public CourseService(IRepository<Course> courseRepo, ILogger<CourseService> logger, IDbConnection connection)
         {
             _courseRepo = courseRepo;
             _logger = logger;
-            _teacherRepo = teacherRepo;
-            _classRepo = classRepo;
             _connection = connection;
         }
 
@@ -34,8 +30,8 @@ namespace CourseSelection.Services
                 return new OperationResult<CreateCourseResponse>("請輸入課程編號");
             if (string.IsNullOrEmpty(request.Name))
                 return new OperationResult<CreateCourseResponse>("請輸入課程名稱");
-            if (request.MaximumEnrollment <= 0)
-                return new OperationResult<CreateCourseResponse>("請輸入開課人數上限");
+            if (request.MaximumEnrollment < 10 || request.MaximumEnrollment > 120)
+                return new OperationResult<CreateCourseResponse>("開課人數最少須10人，最多120人");
             if (request.ClassId <= 0)
                 return new OperationResult<CreateCourseResponse>("請輸入上課教室");
             if (request.TeacherId <= 0)
