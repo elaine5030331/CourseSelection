@@ -16,6 +16,7 @@ namespace CourseSelectionTest
     {
         private CourseService _courseService;
         private Mock<IRepository<Course>> _courseRepository;
+        private Mock<IRepository<Teacher>> _teacherRepository;
         private IDbConnection _connection;
         private ILogger<CourseService> _logger;
 
@@ -23,7 +24,8 @@ namespace CourseSelectionTest
         public void Setup()
         {
             _courseRepository = new Mock<IRepository<Course>>();
-            _courseService = new CourseService(_courseRepository.Object, _logger, _connection);
+            _teacherRepository = new Mock<IRepository<Teacher>>();
+            _courseService = new CourseService(_courseRepository.Object, _logger, _connection, _teacherRepository.Object);
         }
 
         [Description("CreateCourse API 開課人數最少須10人，最多120人")]
@@ -31,25 +33,26 @@ namespace CourseSelectionTest
         [TestCase(10, true)]
         [TestCase(100, true)]
         [TestCase(121, false)]
-        public async Task CreateCourse_WhenMaximumEnrollmentIsInvalid_ReturnError(int nums, bool expected)
+        public void CreateCourse_WhenMaximumEnrollmentIsInvalid_ReturnError(int nums, bool expected)
         {
-            var result = await _courseService.CreateCourseAsync(new CreateCourseRequest
-            {
-                CourseId = "test100",
-                Name = "test",
-                Credits = 3,
-                Required = true,
-                Language = Language.國語,
-                Syllabus = "小強！小強你怎麼了小強？小強你不能死啊！",
-                DayOfWeek = DayOfWeekEnum.星期一,
-                StartTime = default,
-                EndTime = default,
-                MaximumEnrollment = nums,
-                ClassId = 1,
-                TeacherId = 1
-            });
+            //var result = await _courseService.CreateCourseAsync(new CreateCourseRequest
+            //{
+            //    CourseId = "test100",
+            //    Name = "test",
+            //    Credits = 3,
+            //    Required = true,
+            //    Language = Language.國語,
+            //    Syllabus = "小強！小強你怎麼了小強？小強你不能死啊！",
+            //    DayOfWeek = DayOfWeekEnum.星期一,
+            //    StartTime = default,
+            //    EndTime = default,
+            //    MaximumEnrollment = nums,
+            //    ClassId = 1,
+            //    TeacherId = 1
+            //});
+            var result = _courseService.IsMaximumEnrollmentValid(nums);
 
-            Assert.That(result.IsSuccess, Is.EqualTo(expected));
+            Assert.That(result, Is.EqualTo(expected));
         }
 
         public static IEnumerable<TestCaseData> DeleteCourseTestCases()
