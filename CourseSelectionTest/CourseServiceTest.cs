@@ -17,6 +17,7 @@ namespace CourseSelectionTest
         private CourseService _courseService;
         private Mock<IRepository<Course>> _courseRepository;
         private Mock<IRepository<Teacher>> _teacherRepository;
+        private Mock<IRepository<Class>> _classRepository;
         private IDbConnection _connection;
         private ILogger<CourseService> _logger;
 
@@ -25,7 +26,8 @@ namespace CourseSelectionTest
         {
             _courseRepository = new Mock<IRepository<Course>>();
             _teacherRepository = new Mock<IRepository<Teacher>>();
-            _courseService = new CourseService(_courseRepository.Object, _logger, _connection, _teacherRepository.Object);
+            _classRepository = new Mock<IRepository<Class>>();
+            _courseService = new CourseService(_courseRepository.Object, _logger, _connection, _teacherRepository.Object, _classRepository.Object);
         }
 
         [Description("CreateCourse API 開課人數最少須10人，最多120人")]
@@ -35,23 +37,7 @@ namespace CourseSelectionTest
         [TestCase(121, false)]
         public void CreateCourse_WhenMaximumEnrollmentIsInvalid_ReturnError(int nums, bool expected)
         {
-            //var result = await _courseService.CreateCourseAsync(new CreateCourseRequest
-            //{
-            //    CourseId = "test100",
-            //    Name = "test",
-            //    Credits = 3,
-            //    Required = true,
-            //    Language = Language.國語,
-            //    Syllabus = "小強！小強你怎麼了小強？小強你不能死啊！",
-            //    DayOfWeek = DayOfWeekEnum.星期一,
-            //    StartTime = default,
-            //    EndTime = default,
-            //    MaximumEnrollment = nums,
-            //    ClassId = 1,
-            //    TeacherId = 1
-            //});
-            var result = _courseService.IsMaximumEnrollmentValid(nums);
-
+            var result = _courseService.IsEnrollmentValid(nums);
             Assert.That(result, Is.EqualTo(expected));
         }
 
