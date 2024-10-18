@@ -51,5 +51,23 @@ namespace CourseSelectionTest
 
             Assert.That(result.IsSuccess, Is.EqualTo(expected));
         }
+
+        public static IEnumerable<TestCaseData> DeleteCourseTestCases()
+        {
+            //資料庫狀態為已刪除，應無法再次操作此API
+            yield return new TestCaseData(new Course { Id = 1, IsDelete = true}, false);
+            //資料庫狀態尚未被刪除，可以順利刪除此課程I
+            yield return new TestCaseData(new Course { Id = 1, IsDelete = false}, true);
+        }
+
+        [Description("DeleteCourse API 若課程在資料庫的狀態是IsDelete則回傳結果須為 false")]
+        [Test, TestCaseSource(nameof(DeleteCourseTestCases))]
+        public async Task DeleteCourse_WhenCantFindCourse_ReturnFalse(Course course, bool expected)
+        {
+            _courseRepository.Setup(c => c.GetByIdAsync(It.IsAny<int>())).ReturnsAsync(course);
+            var result = await _courseService.DeleteCourseAsync(course.Id);
+
+            Assert.That(result.IsSuccess, Is.EqualTo(expected));
+        }
     }
 }
